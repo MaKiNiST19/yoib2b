@@ -147,7 +147,8 @@ router.get('/products/prices', requireAdmin, async (req, res) => {
     const priceMap = {};
     prices.forEach(p => {
       if (!priceMap[p.product_id]) priceMap[p.product_id] = {};
-      priceMap[p.product_id][p.variant_size] = { price: p.price, currency: p.currency };
+      const key = p.variant_size || 'STD';
+      priceMap[p.product_id][key] = { price: p.price, currency: p.currency };
     });
 
     const result = [];
@@ -169,9 +170,9 @@ router.get('/products/prices', requireAdmin, async (req, res) => {
           id: p.id,
           name: p.name,
           sku: p.sku,
-          size: null,
-          price: priceMap[p.id]?.['']?.price ?? null,
-          currency: priceMap[p.id]?.['']?.currency ?? 'TRY',
+          size: 'STD',
+          price: priceMap[p.id]?.['STD']?.price ?? null,
+          currency: priceMap[p.id]?.['STD']?.currency ?? 'TRY',
         });
       }
     }
@@ -185,7 +186,7 @@ router.get('/products/prices', requireAdmin, async (req, res) => {
 router.put('/products/:id/price', requireAdmin, async (req, res) => {
   try {
     const { price, currency, size } = req.body;
-    const variantSize = size || '';
+    const variantSize = size || 'STD';
     const sql = getDb();
     await sql`
       INSERT INTO product_prices (product_id, variant_size, price, currency, updated_at)

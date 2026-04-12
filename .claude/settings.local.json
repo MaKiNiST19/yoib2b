@@ -28,7 +28,8 @@
       "Bash(curl -s \"https://www.slidedesign.it/product/pot-of-love\")",
       "Bash(curl -s \"https://www.slidedesign.it/product/gelee\")",
       "Bash(curl -s \"https://www.slidedesign.it/product/mirror-of-love\")",
-      "Bash(curl -s https://www.slidedesign.it/product/__TRACKED_VAR__)"
+      "Bash(curl -s https://www.slidedesign.it/product/__TRACKED_VAR__)",
+      "Bash(node -r dotenv/config -e ':*)"
     ]
   }
 }

@@ -29,21 +29,20 @@ router.get('/', authenticate, async (req, res) => {
     }
 
     res.json(products.map(p => {
-      // For size products return prices per size, for others return single price
-      if (p.sizes) {
-        const sizePrices = {};
-        p.sizes.forEach(s => {
-          sizePrices[s] = {
-            price: priceMap[p.id]?.[s]?.price ?? null,
-            currency: priceMap[p.id]?.[s]?.currency ?? 'TRY',
-          };
-        });
-        return { ...p, price: null, currency: 'TRY', sizePrices };
-      }
+      const sizePrices = {};
+      (p.sizes || ['STD']).forEach(s => {
+        sizePrices[s] = {
+          price: priceMap[p.id]?.[s]?.price ?? null,
+          currency: priceMap[p.id]?.[s]?.currency ?? 'TRY',
+        };
+      });
+      // Single-size (STD) products expose price at top level for convenience
+      const isStd = !p.sizes || (p.sizes.length === 1 && p.sizes[0] === 'STD');
       return {
         ...p,
-        price: priceMap[p.id]?.['']?.price ?? null,
-        currency: priceMap[p.id]?.['']?.currency ?? 'TRY',
+        sizePrices,
+        price: isStd ? (sizePrices['STD']?.price ?? null) : null,
+        currency: isStd ? (sizePrices['STD']?.currency ?? 'TRY') : 'TRY',
       };
     }));
   } catch (err) {

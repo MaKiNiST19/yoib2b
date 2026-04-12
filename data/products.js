@@ -24,6 +24,7 @@ const GELEE_COLORS = [
 ];
 
 const MIRROR_SIZES = ['S', 'M', 'L', 'XL'];
+const STD_SIZE = ['STD']; // Boyut varyantı olmayan ürünler için standart boyut
 
 const CATEGORIES = [
   { id: 'koltuk-sandalye',   name: 'Koltuk & Sandalye' },
@@ -51,7 +52,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/ambrogio-01',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'amanda-01',
@@ -71,7 +72,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/amanda-01',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'amore',
@@ -91,7 +92,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/amore',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'wow',
@@ -111,7 +112,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/wow',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'threebu',
@@ -131,7 +132,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/threebu',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'threebu-pot',
@@ -151,7 +152,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/threebu-pot',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'kroko-01',
@@ -171,7 +172,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/kroko-01',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'big-kroko',
@@ -191,7 +192,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/big-kroko',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'pot-of-love',
@@ -211,7 +212,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/pot-of-love',
     colors: STANDARD_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'gelee',
@@ -231,7 +232,7 @@ const PRODUCTS = [
     ],
     productUrl: 'https://www.slidedesign.it/product/gelee',
     colors: GELEE_COLORS,
-    sizes: null,
+    sizes: STD_SIZE,
   },
   {
     id: 'mirror-of-love',

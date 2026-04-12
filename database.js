@@ -8,7 +8,10 @@ function getDb() {
   return neon(process.env.DATABASE_URL);
 }
 
+let dbInitialized = false;
+
 async function initDb() {
+  if (dbInitialized) return;
   const sql = getDb();
 
   await sql`
@@ -54,27 +57,12 @@ async function initDb() {
     )
   `;
 
-  // product_prices: drop old single-key version and recreate with composite key
-  // This runs safely: IF the old structure exists (no variant_size column), migrate it
-  await sql`
-    DO $$
-    BEGIN
-      IF EXISTS (
-        SELECT 1 FROM information_schema.tables
-        WHERE table_name = 'product_prices'
-      ) AND NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name = 'product_prices' AND column_name = 'variant_size'
-      ) THEN
-        DROP TABLE product_prices;
-      END IF;
-    END $$
-  `;
-
+  // product_prices: (product_id, variant_size) composite PK
+  // variant_size = 'STD' for standard (non-size) products, 'S'/'M'/'L'/'XL' for Mirror of Love
   await sql`
     CREATE TABLE IF NOT EXISTS product_prices (
       product_id   TEXT NOT NULL,
-      variant_size TEXT NOT NULL DEFAULT '',
+      variant_size TEXT NOT NULL DEFAULT 'STD',
       price        NUMERIC,
       currency     TEXT DEFAULT 'TRY',
       updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -94,6 +82,7 @@ async function initDb() {
     console.log(`✓ Admin kullanıcısı oluşturuldu. Şifre: ${adminPassword}`);
   }
 
+  dbInitialized = true;
   console.log('✓ Veritabanı hazır (Neon PostgreSQL)');
 }
 

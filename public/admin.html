@@ -571,9 +571,11 @@ async function loadPrices() {
     let lastProductId = null;
 
     rows.forEach((p, idx) => {
-      const rowKey = p.id + (p.size ? '__' + p.size : '');
+      const rowKey = p.id + '__' + (p.size || 'STD');
       const isNewProduct = p.id !== lastProductId;
       lastProductId = p.id;
+      const sizeLabel = p.size === 'STD' ? 'Standart' : (p.size || 'Standart');
+      const badgeClass = p.size === 'STD' ? 'badge-active' : 'badge-processing';
 
       html += `
         <tr>
@@ -584,10 +586,7 @@ async function loadPrices() {
             ${isNewProduct ? p.sku : ''}
           </td>
           <td>
-            ${p.size
-              ? `<span class="badge badge-processing" style="font-size:11px;">${p.size}</span>`
-              : '<span style="color:var(--text-muted);font-size:12px;">—</span>'
-            }
+            <span class="badge ${badgeClass}" style="font-size:11px;">${sizeLabel}</span>
           </td>
           <td>
             <input type="number" class="form-control" id="price-${rowKey}" value="${p.price ?? ''}"

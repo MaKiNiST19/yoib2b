@@ -2,6 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { initDb } = require('./database');
+
+// DB'yi başlat (Vercel cold start dahil)
+initDb().catch(err => console.error('DB init hatası:', err.message));
 
 const app = express();
 
