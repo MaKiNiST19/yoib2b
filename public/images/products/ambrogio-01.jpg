@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>InvalidRequest</Code><Message>The authorization mechanism you have provided is not supported. Please use AWS4-HMAC-SHA256.</Message><Resource>/product/a30a056e-2b75-4628-a157-2b718fa0fe9c</Resource><RequestId></RequestId><HostId>fdaf6574-0017-4804-8c90-ff08a91735f3</HostId></Error>

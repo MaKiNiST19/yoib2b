@@ -1,5 +1,6 @@
 const CDN = 'https://slide.a8d2.fra.idrivee2-32.com/product/';
 const img = (uuid) => CDN + uuid;
+const local = (id) => `/images/products/${id}.jpg`;
 
 const STANDARD_COLORS = [
   { id: 'milky-white',       name: 'Milky White',       hex: '#F0EDE4' },
@@ -41,7 +42,7 @@ const PRODUCTS = [
     category: 'sehpa-masa',
     designer: 'Favaretto & Partners',
     description: 'Komik tasarım estetiğiyle buluşan servis masası. %100 geri dönüştürülmüş Tetra Pak malzemesinden üretilen EcoAllene ile çevre dostu bir seçim.',
-    image: img('a30a056e-2b75-4628-a157-2b718fa0fe9c'),
+    image: local('ambrogio-01'),
     gallery: [
       img('a30a056e-2b75-4628-a157-2b718fa0fe9c'),
       img('55877def-ab0e-4681-9910-f1cab70f2b7c'),
@@ -61,7 +62,7 @@ const PRODUCTS = [
     category: 'sehpa-masa',
     designer: 'Favaretto & Partners',
     description: 'Komik formu ve yeşil ruhuyla servis masası. %30 EcoAllene içeren plastikten üretilmiştir.',
-    image: img('79120ce2-ba94-4d79-aa63-d0ab596fc915'),
+    image: local('amanda-01'),
     gallery: [
       img('79120ce2-ba94-4d79-aa63-d0ab596fc915'),
       img('55877def-ab0e-4681-9910-f1cab70f2b7c'),
@@ -81,7 +82,7 @@ const PRODUCTS = [
     category: 'bank-oturma',
     designer: 'Giò Colonna Romano',
     description: 'Polietilenden üretilen stilize kaligrafi bank. İç ve dış mekan kullanımına uygundur.',
-    image: img('795c0f25-b2e9-4595-87b6-56bd96591567'),
+    image: local('amore'),
     gallery: [
       img('795c0f25-b2e9-4595-87b6-56bd96591567'),
       img('7c547ae4-6bd8-49f9-bc67-9fbad4edada5'),
@@ -101,7 +102,7 @@ const PRODUCTS = [
     category: 'bank-oturma',
     designer: 'Giò Colonna Romano',
     description: 'Palindromik kaligrafi tasarımlı pop bank. "WOW" harfleri ters çevrilince "MOM" okunur.',
-    image: img('4536fb41-6f92-4080-a19c-e88345b6eb48'),
+    image: local('wow'),
     gallery: [
       img('4536fb41-6f92-4080-a19c-e88345b6eb48'),
       img('cecd3477-be3c-4de8-93f3-f3f5063962aa'),
@@ -121,7 +122,7 @@ const PRODUCTS = [
     category: 'sehpa-masa',
     designer: 'Marcantonio',
     description: 'Afrika sanatından ilham alan çok fonksiyonlu tabure / sehpa. Vazo veya lamba tabanı olarak da kullanılabilir.',
-    image: img('b39a11e9-5cf4-42b6-8644-25647992ae51'),
+    image: local('threebu'),
     gallery: [
       img('b39a11e9-5cf4-42b6-8644-25647992ae51'),
       img('d8083d28-d76b-40a6-8c8c-ed4395352985'),
@@ -141,7 +142,7 @@ const PRODUCTS = [
     category: 'dekorasyon',
     designer: 'Marcantonio',
     description: 'Afrika sanatından ilham alan dekoratif vazo. Tabure veya sehpa olarak da kullanılabilir.',
-    image: img('06b3358b-10d2-431d-9ae3-47d599e3750d'),
+    image: local('threebu-pot'),
     gallery: [
       img('06b3358b-10d2-431d-9ae3-47d599e3750d'),
       img('94d2d989-d624-4fe7-9c05-c449f1895e89'),
@@ -161,7 +162,7 @@ const PRODUCTS = [
     category: 'koltuk-sandalye',
     designer: 'Marcantonio',
     description: 'Şeker kamışından üretilen biyoplastik lounge koltuk. GREEN GOOD DESIGN 2022 ödüllü.',
-    image: img('40490ca9-da60-4f81-a197-77a39dc86f0a'),
+    image: local('kroko-01'),
     gallery: [
       img('40490ca9-da60-4f81-a197-77a39dc86f0a'),
       img('e28f5cff-13fa-407d-8b2f-d11418db304b'),
@@ -181,7 +182,7 @@ const PRODUCTS = [
     category: 'koltuk-sandalye',
     designer: 'Marcantonio',
     description: 'Kroko\'nun iki kişilik versiyonu. Biyoplastik dış mekan kanepe.',
-    image: img('1358778e-9f80-4165-8774-04d74a3e259e'),
+    image: local('big-kroko'),
     gallery: [
       img('1358778e-9f80-4165-8774-04d74a3e259e'),
       img('e28f5cff-13fa-407d-8b2f-d11418db304b'),
@@ -201,7 +202,7 @@ const PRODUCTS = [
     category: 'dekorasyon',
     designer: 'Moro & Pigatti',
     description: 'Design of Love koleksiyonundan dekoratif saksı. İç ve dış mekan kullanımına uygun polietilen.',
-    image: img('e3d6fe90-ce7e-4f8a-9c90-5682ca0c30bb'),
+    image: local('pot-of-love'),
     gallery: [
       img('e3d6fe90-ce7e-4f8a-9c90-5682ca0c30bb'),
       img('b0e18c5c-a3c0-45a2-8e62-314629d53f98'),
@@ -221,7 +222,7 @@ const PRODUCTS = [
     category: 'bank-oturma',
     designer: 'Roberto Paoli',
     description: 'Yumuşak poliüretan puf. Şekeri andıran formuyla iç ve dış mekanlarda kullanılabilir.',
-    image: img('4d273f8a-98f2-46aa-9bf7-4f48b4347ed0'),
+    image: local('gelee'),
     gallery: [
       img('4d273f8a-98f2-46aa-9bf7-4f48b4347ed0'),
       img('d80f83a2-3b0a-4a6a-b2a2-5bb6e9924e53'),
@@ -241,7 +242,7 @@ const PRODUCTS = [
     category: 'dekorasyon',
     designer: 'Moro & Pigatti',
     description: 'İtalyan barok sanatından ilham alan çerçevesiyle çağdaş ayna. Design of Love koleksiyonu.',
-    image: img('382d7e5b-ebb9-45e8-91ab-9ed149d004fc'),
+    image: local('mirror-of-love'),
     gallery: [
       img('382d7e5b-ebb9-45e8-91ab-9ed149d004fc'),
       img('f17f9e07-1dff-481a-ad02-8a836aa5399b'),
