@@ -294,21 +294,40 @@ function renderProducts(products) {
     ).join('');
 
     const selectedColor = p.colors[0];
+
+    // Gallery thumbnails (show up to 4 extra)
+    const thumbs = (p.gallery || []).slice(1, 5).map(url =>
+      `<img src="${url}" onclick="setMainImg('${p.id}','${url}')" style="width:28px;height:28px;object-fit:cover;border-radius:4px;cursor:pointer;border:1.5px solid transparent;opacity:.7;transition:all .15s;" onmouseover="this.style.opacity='1';this.style.borderColor='var(--gold)'" onmouseout="this.style.opacity='.7';this.style.borderColor='transparent'" onerror="this.style.display='none'">`
+    ).join('');
+
+    // Size select — onchange updates price display
     const sizeSelect = p.sizes
-      ? `<select class="size-select" id="size-${p.id}"><option value="">Seç</option>${p.sizes.map(s => `<option value="${s}">${s}</option>`).join('')}</select>`
+      ? `<select class="size-select" id="size-${p.id}" onchange="updateSizePrice('${p.id}')">
+           <option value="">Seç</option>
+           ${p.sizes.map(s => {
+             const sp = p.sizePrices?.[s];
+             const label = sp?.price ? `${s} — ${parseFloat(sp.price).toFixed(2)} ${sp.currency}` : s;
+             return `<option value="${s}">${label}</option>`;
+           }).join('')}
+         </select>`
       : `<span style="color:#CBD5E1;font-size:12px;">—</span>`;
 
-    const priceHtml = p.price
-      ? `<span class="price-cell">${p.price.toFixed(2)} ${p.currency}</span>`
-      : `<span class="price-tbd">—</span>`;
+    // Price cell — for size products shows placeholder updated on size change
+    const priceHtml = p.sizes
+      ? `<span id="price-${p.id}" class="price-tbd">Beden seçin</span>`
+      : (p.price
+          ? `<span class="price-cell">${parseFloat(p.price).toFixed(2)} ${p.currency}</span>`
+          : `<span class="price-tbd">—</span>`);
 
     return `
       <tr id="row-${p.id}">
         <td>
-          <img src="${p.image}" alt="${p.name}" class="product-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <img src="${p.image}" alt="${p.name}" class="product-img" id="main-img-${p.id}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="product-img-placeholder" style="display:none;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
+          ${thumbs ? `<div style="display:flex;gap:3px;margin-top:4px;flex-wrap:wrap;">${thumbs}</div>` : ''}
         </td>
         <td>
           <div class="product-name">${p.name}</div>
@@ -342,6 +361,24 @@ function renderProducts(products) {
       </tr>
     `;
   }).join('');
+}
+
+function setMainImg(productId, url) {
+  const img = document.getElementById('main-img-' + productId);
+  if (img) { img.src = url; img.style.display = 'block'; }
+}
+
+function updateSizePrice(productId) {
+  const product = allProducts.find(p => p.id === productId);
+  const sizeEl = document.getElementById('size-' + productId);
+  const priceEl = document.getElementById('price-' + productId);
+  if (!product || !sizeEl || !priceEl) return;
+  const size = sizeEl.value;
+  if (!size) { priceEl.innerHTML = '<span class="price-tbd">Beden seçin</span>'; return; }
+  const sp = product.sizePrices?.[size];
+  priceEl.innerHTML = sp?.price
+    ? `<span class="price-cell">${parseFloat(sp.price).toFixed(2)} ${sp.currency}</span>`
+    : `<span class="price-tbd">—</span>`;
 }
 
 // Color Picker

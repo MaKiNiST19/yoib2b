@@ -131,7 +131,7 @@
         </div>
         <div class="data-table-wrap">
           <table class="data-table">
-            <thead><tr><th>Ürün</th><th>Stok Kodu</th><th>Birim Fiyat</th><th>Para Birimi</th><th></th></tr></thead>
+            <thead><tr><th>Ürün</th><th>Stok Kodu</th><th>Beden</th><th>Birim Fiyat</th><th>Para Birimi</th><th></th></tr></thead>
             <tbody id="prices-tbody"><tr><td colspan="5" class="loading-overlay"><span class="spinner"></span></td></tr></tbody>
           </table>
         </div>
@@ -566,37 +566,62 @@ async function loadPrices() {
   const tbody = document.getElementById('prices-tbody');
   tbody.innerHTML = '<tr><td colspan="5" class="loading-overlay"><span class="spinner"></span></td></tr>';
   try {
-    const products = await api('/admin/products/prices');
-    tbody.innerHTML = products.map(p => `
-      <tr id="price-row-${p.id}">
-        <td><strong>${p.name}</strong></td>
-        <td style="font-family:monospace;font-size:12px;color:var(--text-muted);">${p.sku}</td>
-        <td>
-          <input type="number" class="form-control" id="price-${p.id}" value="${p.price ?? ''}" placeholder="—" step="0.01" min="0" style="max-width:120px;">
-        </td>
-        <td>
-          <select class="form-control" id="curr-${p.id}" style="max-width:90px;">
-            <option value="EUR" ${p.currency==='EUR'?'selected':''}>EUR</option>
-            <option value="USD" ${p.currency==='USD'?'selected':''}>USD</option>
-            <option value="TRY" ${p.currency==='TRY'?'selected':''}>TRY</option>
-          </select>
-        </td>
-        <td>
-          <button class="btn btn-primary btn-sm" onclick="savePrice('${p.id}')">Kaydet</button>
-        </td>
-      </tr>
-    `).join('');
+    const rows = await api('/admin/products/prices');
+    let html = '';
+    let lastProductId = null;
+
+    rows.forEach((p, idx) => {
+      const rowKey = p.id + (p.size ? '__' + p.size : '');
+      const isNewProduct = p.id !== lastProductId;
+      lastProductId = p.id;
+
+      html += `
+        <tr>
+          <td>
+            ${isNewProduct ? `<strong>${p.name}</strong>` : '<span style="color:var(--text-muted);font-size:12px;padding-left:12px;">↳</span>'}
+          </td>
+          <td style="font-family:monospace;font-size:12px;color:var(--text-muted);">
+            ${isNewProduct ? p.sku : ''}
+          </td>
+          <td>
+            ${p.size
+              ? `<span class="badge badge-processing" style="font-size:11px;">${p.size}</span>`
+              : '<span style="color:var(--text-muted);font-size:12px;">—</span>'
+            }
+          </td>
+          <td>
+            <input type="number" class="form-control" id="price-${rowKey}" value="${p.price ?? ''}"
+              placeholder="—" step="0.01" min="0" style="max-width:110px;">
+          </td>
+          <td>
+            <select class="form-control" id="curr-${rowKey}" style="max-width:80px;">
+              <option value="EUR" ${p.currency==='EUR'?'selected':''}>EUR</option>
+              <option value="USD" ${p.currency==='USD'?'selected':''}>USD</option>
+              <option value="TRY" ${p.currency==='TRY'?'selected':''}>TRY</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn btn-primary btn-sm" onclick="savePrice('${p.id}','${p.size||''}','${rowKey}')">Kaydet</button>
+          </td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
   } catch (ex) {
-    tbody.innerHTML = `<tr><td colspan="5"><div class="alert alert-error">${ex.message}</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="alert alert-error">${ex.message}</div></td></tr>`;
   }
 }
 
-async function savePrice(productId) {
-  const price = parseFloat(document.getElementById('price-' + productId).value);
-  const currency = document.getElementById('curr-' + productId).value;
+async function savePrice(productId, size, rowKey) {
+  const price = parseFloat(document.getElementById('price-' + rowKey).value);
+  const currency = document.getElementById('curr-' + rowKey).value;
   if (isNaN(price) || price < 0) { toast('Geçerli bir fiyat girin.', 'error'); return; }
   try {
-    await api('/admin/products/' + productId + '/price', { method: 'PUT', body: { price, currency } });
+    await api('/admin/products/' + productId + '/price', {
+      method: 'PUT',
+      body: { price, currency, size: size || undefined },
+    });
     toast('Fiyat güncellendi.', 'success');
   } catch (ex) {
     toast(ex.message, 'error');

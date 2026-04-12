@@ -54,13 +54,36 @@ async function initDb() {
     )
   `;
 
+  // product_prices: composite key (product_id + variant_size) for per-size pricing
+  // variant_size = '' for products without size variants
   await sql`
     CREATE TABLE IF NOT EXISTS product_prices (
-      product_id TEXT PRIMARY KEY,
-      price      NUMERIC,
-      currency   TEXT DEFAULT 'EUR',
-      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      product_id   TEXT NOT NULL,
+      variant_size TEXT NOT NULL DEFAULT '',
+      price        NUMERIC,
+      currency     TEXT DEFAULT 'EUR',
+      updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      PRIMARY KEY (product_id, variant_size)
     )
+  `;
+
+  // Migrate old single-key table if it exists with the old structure
+  await sql`
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name = 'product_prices' AND column_name = 'product_id'
+        AND NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'product_prices' AND column_name = 'variant_size'
+        )
+      ) THEN
+        ALTER TABLE product_prices ADD COLUMN IF NOT EXISTS variant_size TEXT NOT NULL DEFAULT '';
+        ALTER TABLE product_prices DROP CONSTRAINT IF EXISTS product_prices_pkey;
+        ALTER TABLE product_prices ADD PRIMARY KEY (product_id, variant_size);
+      END IF;
+    END $$
   `;
 
   // Varsayılan admin kullanıcısı

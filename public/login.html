@@ -29,7 +29,13 @@
         </div>
         <div class="form-group">
           <label for="password">Şifre</label>
-          <input type="password" id="password" class="form-control" placeholder="••••••••" autocomplete="current-password" required>
+          <div style="position:relative;">
+            <input type="password" id="password" class="form-control" placeholder="••••••••" autocomplete="current-password" required style="padding-right:44px;">
+            <button type="button" id="eye-btn" onclick="togglePassword()" style="position:absolute;right:0;top:0;height:100%;width:42px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#9CA3AF;padding:0;" tabindex="-1">
+              <svg id="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg id="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
         </div>
         <button type="submit" class="btn btn-primary btn-full btn-lg" id="login-btn">
           Giriş Yap
@@ -43,6 +49,24 @@
   </div>
 
   <script>
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const open = document.getElementById('eye-open');
+      const closed = document.getElementById('eye-closed');
+      const btn = document.getElementById('eye-btn');
+      if (input.type === 'password') {
+        input.type = 'text';
+        open.style.display = 'none';
+        closed.style.display = 'block';
+        btn.style.color = '#C9A84C';
+      } else {
+        input.type = 'password';
+        open.style.display = 'block';
+        closed.style.display = 'none';
+        btn.style.color = '#9CA3AF';
+      }
+    }
+
     // Already logged in?
     const token = localStorage.getItem('ys_token');
     const user = JSON.parse(localStorage.getItem('ys_user') || 'null');

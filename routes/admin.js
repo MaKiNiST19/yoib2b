@@ -143,30 +143,55 @@ router.get('/products/prices', requireAdmin, async (req, res) => {
   try {
     const sql = getDb();
     const prices = await sql`SELECT * FROM product_prices`;
+    // priceMap[productId][size] = { price, currency }
     const priceMap = {};
-    prices.forEach(p => { priceMap[p.product_id] = p; });
+    prices.forEach(p => {
+      if (!priceMap[p.product_id]) priceMap[p.product_id] = {};
+      priceMap[p.product_id][p.variant_size] = { price: p.price, currency: p.currency };
+    });
 
-    res.json(PRODUCTS.map(p => ({
-      id: p.id,
-      name: p.name,
-      sku: p.sku,
-      price: priceMap[p.id]?.price ?? null,
-      currency: priceMap[p.id]?.currency ?? 'EUR',
-    })));
+    const result = [];
+    for (const p of PRODUCTS) {
+      if (p.sizes) {
+        // One entry per size
+        for (const size of p.sizes) {
+          result.push({
+            id: p.id,
+            name: p.name,
+            sku: p.sku,
+            size,
+            price: priceMap[p.id]?.[size]?.price ?? null,
+            currency: priceMap[p.id]?.[size]?.currency ?? 'EUR',
+          });
+        }
+      } else {
+        result.push({
+          id: p.id,
+          name: p.name,
+          sku: p.sku,
+          size: null,
+          price: priceMap[p.id]?.['']?.price ?? null,
+          currency: priceMap[p.id]?.['']?.currency ?? 'EUR',
+        });
+      }
+    }
+    res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// PUT /api/admin/products/:id/price
+// PUT /api/admin/products/:id/price  — body: { price, currency, size? }
 router.put('/products/:id/price', requireAdmin, async (req, res) => {
   try {
-    const { price, currency } = req.body;
+    const { price, currency, size } = req.body;
+    const variantSize = size || '';
     const sql = getDb();
     await sql`
-      INSERT INTO product_prices (product_id, price, currency, updated_at)
-      VALUES (${req.params.id}, ${price}, ${currency || 'EUR'}, NOW())
-      ON CONFLICT (product_id) DO UPDATE SET price = EXCLUDED.price, currency = EXCLUDED.currency, updated_at = NOW()
+      INSERT INTO product_prices (product_id, variant_size, price, currency, updated_at)
+      VALUES (${req.params.id}, ${variantSize}, ${price}, ${currency || 'EUR'}, NOW())
+      ON CONFLICT (product_id, variant_size) DO UPDATE
+        SET price = EXCLUDED.price, currency = EXCLUDED.currency, updated_at = NOW()
     `;
     res.json({ message: 'Fiyat güncellendi' });
   } catch (err) {

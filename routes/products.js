@@ -9,9 +9,13 @@ const router = express.Router();
 router.get('/', authenticate, async (req, res) => {
   try {
     const sql = getDb();
-    const prices = await sql`SELECT product_id, price, currency FROM product_prices`;
+    const prices = await sql`SELECT product_id, variant_size, price, currency FROM product_prices`;
+    // priceMap[productId][size] = { price, currency }
     const priceMap = {};
-    prices.forEach(p => { priceMap[p.product_id] = { price: p.price, currency: p.currency }; });
+    prices.forEach(p => {
+      if (!priceMap[p.product_id]) priceMap[p.product_id] = {};
+      priceMap[p.product_id][p.variant_size] = { price: p.price, currency: p.currency };
+    });
 
     const { category, search } = req.query;
     let products = PRODUCTS;
@@ -24,11 +28,24 @@ router.get('/', authenticate, async (req, res) => {
       );
     }
 
-    res.json(products.map(p => ({
-      ...p,
-      price: priceMap[p.id]?.price ?? null,
-      currency: priceMap[p.id]?.currency ?? 'EUR',
-    })));
+    res.json(products.map(p => {
+      // For size products return prices per size, for others return single price
+      if (p.sizes) {
+        const sizePrices = {};
+        p.sizes.forEach(s => {
+          sizePrices[s] = {
+            price: priceMap[p.id]?.[s]?.price ?? null,
+            currency: priceMap[p.id]?.[s]?.currency ?? 'EUR',
+          };
+        });
+        return { ...p, price: null, currency: 'EUR', sizePrices };
+      }
+      return {
+        ...p,
+        price: priceMap[p.id]?.['']?.price ?? null,
+        currency: priceMap[p.id]?.['']?.currency ?? 'EUR',
+      };
+    }));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

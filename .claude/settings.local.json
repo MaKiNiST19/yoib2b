@@ -16,7 +16,19 @@
       "Bash(node -e ':*)",
       "Bash(npm install:*)",
       "Bash(node -e \"require\\('./database'\\).initDb\\(\\).then\\(\\(\\)=>process.exit\\(0\\)\\).catch\\(e=>{console.error\\(e\\);process.exit\\(1\\)}\\)\")",
-      "Bash(node -r dotenv/config -e \"require\\('./database'\\).initDb\\(\\).then\\(\\(\\)=>process.exit\\(0\\)\\).catch\\(e=>{console.error\\(e.message\\);process.exit\\(1\\)}\\)\")"
+      "Bash(node -r dotenv/config -e \"require\\('./database'\\).initDb\\(\\).then\\(\\(\\)=>process.exit\\(0\\)\\).catch\\(e=>{console.error\\(e.message\\);process.exit\\(1\\)}\\)\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/ambrogio-01\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/amanda-01\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/amore\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/wow\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/threebu\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/threebu-pot\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/kroko-01\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/big-kroko\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/pot-of-love\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/gelee\")",
+      "Bash(curl -s \"https://www.slidedesign.it/product/mirror-of-love\")",
+      "Bash(curl -s https://www.slidedesign.it/product/__TRACKED_VAR__)"
     ]
   }
 }
