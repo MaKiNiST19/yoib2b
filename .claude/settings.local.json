@@ -34,7 +34,8 @@
       "Bash(node scripts/download-images.js)",
       "Bash(node scripts/download-amanda-variants.js)",
       "Bash(node scripts/download-all-variants.js)",
-      "Bash(node -r dotenv/config -e \"const { initDb } = require\\('./database'\\); initDb\\(\\).then\\(\\(\\) => { console.log\\('OK'\\); process.exit\\(0\\); }\\).catch\\(e => { console.error\\(e.message\\); process.exit\\(1\\); }\\);\")"
+      "Bash(node -r dotenv/config -e \"const { initDb } = require\\('./database'\\); initDb\\(\\).then\\(\\(\\) => { console.log\\('OK'\\); process.exit\\(0\\); }\\).catch\\(e => { console.error\\(e.message\\); process.exit\\(1\\); }\\);\")",
+      "Bash(grep -E \"\\\\.\\(vue|jsx|tsx|html\\)$\")"
     ]
   }
 }

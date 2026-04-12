@@ -137,6 +137,16 @@
   </div>
 </div>
 
+<!-- ── Image Modal ───────────────────────── -->
+<div id="img-modal" onclick="closeImgModal()">
+  <div id="img-modal-inner" onclick="event.stopPropagation()">
+    <button id="img-modal-close" onclick="closeImgModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <img id="img-modal-img" src="" alt="">
+  </div>
+</div>
+
 <!-- ── Cart Drawer ─────────────────────── -->
 <div class="drawer-overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="drawer" id="cart-drawer">
@@ -363,10 +373,14 @@ function renderProducts(products) {
     return `
       <tr id="row-${p.id}">
         <td>
-          <img src="${p.image}" alt="${p.name}" class="product-img" id="main-img-${p.id}"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="product-img-placeholder" style="display:none;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div class="img-hover-wrap" id="img-wrap-${p.id}">
+            <img src="${p.image}" alt="${p.name}" class="product-img" id="main-img-${p.id}"
+              onclick="openImgModal(this.src, '${p.name}')"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="product-img-placeholder" style="display:none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="img-tooltip"><img src="${p.image}" id="tooltip-img-${p.id}" alt="${p.name}"></div>
           </div>
           ${thumbs ? `<div style="display:flex;gap:3px;margin-top:4px;flex-wrap:wrap;">${thumbs}</div>` : ''}
         </td>
@@ -407,7 +421,37 @@ function renderProducts(products) {
 function setMainImg(productId, url) {
   const img = document.getElementById('main-img-' + productId);
   if (img) { img.src = url; img.style.display = 'block'; }
+  const tip = document.getElementById('tooltip-img-' + productId);
+  if (tip) tip.src = url;
 }
+
+function openImgModal(src, name) {
+  const modal = document.getElementById('img-modal');
+  document.getElementById('img-modal-img').src = src;
+  document.getElementById('img-modal-img').alt = name;
+  modal.classList.add('open');
+  document.addEventListener('keydown', _imgModalEsc);
+}
+function closeImgModal() {
+  document.getElementById('img-modal').classList.remove('open');
+  document.removeEventListener('keydown', _imgModalEsc);
+}
+function _imgModalEsc(e) { if (e.key === 'Escape') closeImgModal(); }
+
+// Tooltip konumunu mouse pozisyonuna göre ayarla
+document.addEventListener('mousemove', function(e) {
+  const wrap = e.target.closest('.img-hover-wrap');
+  if (!wrap) return;
+  const tip = wrap.querySelector('.img-tooltip');
+  if (!tip) return;
+  const margin = 12;
+  let x = e.clientX + margin;
+  let y = e.clientY - 110;
+  if (x + 212 > window.innerWidth) x = e.clientX - 212 - margin;
+  if (y < 0) y = margin;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+});
 
 function updateSizePrice(productId) {
   const product = allProducts.find(p => p.id === productId);
@@ -452,14 +496,17 @@ function selectColor(wrapEl, productId) {
   const product = allProducts.find(p => p.id === productId);
   if (product?.colorImages?.[colorId]) {
     const imgEl = document.getElementById(`main-img-${productId}`);
+    const tipEl = document.getElementById(`tooltip-img-${productId}`);
+    const newSrc = product.colorImages[colorId];
     if (imgEl) {
-      imgEl.src = product.colorImages[colorId];
+      imgEl.src = newSrc;
       imgEl.style.display = 'block';
       imgEl.onerror = function() {
         this.src = product.image;
         this.onerror = null;
       };
     }
+    if (tipEl) tipEl.src = newSrc;
   }
 }
 
@@ -485,12 +532,14 @@ function addToCart(productId) {
     existing.quantity += qty;
     toast(`<strong>${product.name}</strong> miktarı güncellendi.`);
   } else {
+    const currentImgEl = document.getElementById(`main-img-${productId}`);
+    const currentImage = (currentImgEl && currentImgEl.src) ? currentImgEl.src : product.image;
     cart.push({
       key,
       product_id: productId,
       product_name: product.name,
       product_sku: product.sku,
-      image: product.image,
+      image: currentImage,
       variant_color: colorName,
       variant_color_id: colorId,
       variant_size: size || null,

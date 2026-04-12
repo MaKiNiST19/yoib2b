@@ -463,7 +463,86 @@ textarea.form-control { resize: vertical; min-height: 80px; }
   border-radius: 6px;
   background: #F0F2F5;
   display: block;
+  cursor: zoom-in;
 }
+
+/* Image hover tooltip */
+.img-hover-wrap {
+  position: relative;
+  display: inline-block;
+}
+.img-hover-wrap .img-tooltip {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  padding: 6px;
+  pointer-events: none;
+}
+.img-hover-wrap:hover .img-tooltip {
+  display: block;
+}
+.img-tooltip img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+}
+
+/* Image fullscreen modal */
+#img-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,.6);
+  align-items: center;
+  justify-content: center;
+}
+#img-modal.open {
+  display: flex;
+}
+#img-modal-inner {
+  position: relative;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 16px 64px rgba(0,0,0,.3);
+  width: 50vw;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#img-modal-inner img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+#img-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,.5);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  z-index: 1;
+  transition: background .15s;
+}
+#img-modal-close:hover { background: rgba(0,0,0,.75); }
+
 .product-img-placeholder {
   width: 60px;
   height: 60px;
