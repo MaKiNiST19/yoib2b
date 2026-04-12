@@ -19,8 +19,8 @@
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-mark">Y</div>
-      <h1>Yoi Studio</h1>
+      <img src="/images/beyaz-logo.png" alt="Yoi Studio" class="logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <h1 style="display:none;">Yoi Studio</h1>
       <span>Slide Design Distribütörü</span>
     </div>
 
@@ -39,7 +39,7 @@
     <div class="sidebar-footer">
       <div class="dealer-info">
         <div class="name" id="sidebar-company">—</div>
-        <div class="role-badge">Bayi</div>
+        <div class="role-badge" id="sidebar-city">—</div>
       </div>
       <button class="nav-item" onclick="logout()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -93,7 +93,7 @@
                 <th>Ürün</th>
                 <th>Kategori</th>
                 <th style="min-width:170px">Renk</th>
-                <th style="width:90px">Beden</th>
+                <th style="width:90px">Boyut</th>
                 <th style="width:72px">Adet</th>
                 <th style="width:80px">Birim Fiyat</th>
                 <th style="width:80px"></th>
@@ -118,14 +118,16 @@
               <tr>
                 <th>Talep No</th>
                 <th>Tarih</th>
-                <th>Ürün Sayısı</th>
+                <th>Ürün Çeşidi</th>
+                <th>Toplam Adet</th>
+                <th>Toplam Tutar</th>
                 <th>Durum</th>
                 <th>Not</th>
                 <th></th>
               </tr>
             </thead>
             <tbody id="requests-tbody">
-              <tr><td colspan="6" class="loading-overlay"><span class="spinner"></span></td></tr>
+              <tr><td colspan="8" class="loading-overlay"><span class="spinner"></span></td></tr>
             </tbody>
           </table>
         </div>
@@ -157,6 +159,16 @@
       <span>Toplam adet: <strong id="cart-total-qty">0</strong></span>
     </div>
     <textarea class="notes-area" id="request-notes" rows="3" placeholder="Talebinizle ilgili not ekleyin (opsiyonel)..."></textarea>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button class="btn btn-outline btn-sm" style="flex:1;" onclick="printCart()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Yazdır
+      </button>
+      <button class="btn btn-outline btn-sm" style="flex:1;" onclick="printCart(true)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        PDF İndir
+      </button>
+    </div>
     <button class="btn btn-primary btn-full btn-lg" onclick="submitRequest()" id="submit-btn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       Talebi Gönder
@@ -166,7 +178,7 @@
 
 <!-- ── Request Detail Modal ───────────── -->
 <div class="modal-overlay" id="request-modal">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="modal-header">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
       <h3 id="modal-title">Talep Detayı</h3>
@@ -174,9 +186,30 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-two-col">
+      <div class="modal-col-left" id="modal-body"></div>
+      <div class="modal-col-right" id="modal-chat">
+        <div class="chat-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Mesajlar
+        </div>
+        <div class="chat-messages" id="chat-messages"><div class="chat-empty">Henüz mesaj yok.</div></div>
+        <div class="chat-input-row">
+          <textarea id="chat-input" rows="2" placeholder="Mesajınızı yazın..."></textarea>
+          <button class="chat-send-btn" id="chat-send-btn" onclick="sendMessage()">Gönder</button>
+        </div>
+      </div>
+    </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal()">Kapat</button>
+      <button class="btn btn-outline btn-sm" onclick="printRequestModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Yazdır
+      </button>
+      <button class="btn btn-outline btn-sm" onclick="printRequestModal(true)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        PDF İndir
+      </button>
     </div>
   </div>
 </div>
@@ -189,6 +222,7 @@ if (!token || !currentUser) { window.location.href = '/login'; }
 if (currentUser?.role === 'admin') { window.location.href = '/admin'; }
 
 document.getElementById('sidebar-company').textContent = currentUser?.company_name || '—';
+document.getElementById('sidebar-city').textContent = currentUser?.city || 'Bayi';
 
 // ── API Helper ─────────────────────────────────────
 async function api(path, opts = {}) {
@@ -290,7 +324,10 @@ function renderProducts(products) {
 
   tbody.innerHTML = products.map(p => {
     const colorsHtml = p.colors.map(c =>
-      `<div class="color-option" title="${c.name}" style="background:${c.hex}" data-id="${c.id}" data-name="${c.name}" onclick="selectColor(this, '${p.id}')"></div>`
+      `<div class="color-opt-wrap${c.id === p.colors[0].id ? ' selected' : ''}" onclick="selectColor(this, '${p.id}')">
+        <span class="color-opt-name">${c.name}</span>
+        <div class="color-option" data-id="${c.id}" data-name="${c.name}" style="background:${c.hex}"></div>
+      </div>`
     ).join('');
 
     const selectedColor = p.colors[0];
@@ -316,12 +353,12 @@ function renderProducts(products) {
            </select>`
         : `<span style="color:#CBD5E1;font-size:12px;">—</span>`;
 
-    // Price cell — for size products shows placeholder updated on size change
-    const priceHtml = p.sizes
-      ? `<span id="price-${p.id}" class="price-tbd">Beden seçin</span>`
-      : (p.price
+    // Price cell — STD shows price directly, sized products show placeholder updated on size change
+    const priceHtml = isStdOnly
+      ? (p.price
           ? `<span class="price-cell">${parseFloat(p.price).toFixed(2)} ${p.currency}</span>`
-          : `<span class="price-tbd">—</span>`);
+          : `<span class="price-tbd">—</span>`)
+      : `<span id="price-${p.id}" class="price-tbd">Boyut seçin</span>`;
 
     return `
       <tr id="row-${p.id}">
@@ -378,7 +415,7 @@ function updateSizePrice(productId) {
   const priceEl = document.getElementById('price-' + productId);
   if (!product || !sizeEl || !priceEl) return;
   const size = sizeEl.value;
-  if (!size) { priceEl.innerHTML = '<span class="price-tbd">Beden seçin</span>'; return; }
+  if (!size) { priceEl.innerHTML = '<span class="price-tbd">Boyut seçin</span>'; return; }
   const sp = product.sizePrices?.[size];
   priceEl.innerHTML = sp?.price
     ? `<span class="price-cell">${parseFloat(sp.price).toFixed(2)} ${sp.currency}</span>`
@@ -398,7 +435,8 @@ document.addEventListener('click', () => {
   document.querySelectorAll('.color-dropdown').forEach(d => d.classList.remove('open'));
 });
 
-function selectColor(el, productId) {
+function selectColor(wrapEl, productId) {
+  const el = wrapEl.querySelector('.color-option');
   const colorId = el.dataset.id;
   const colorName = el.dataset.name;
   const hex = el.style.background;
@@ -406,9 +444,23 @@ function selectColor(el, productId) {
   document.getElementById(`color-name-${productId}`).value = colorName;
   document.getElementById(`swatch-${productId}`).style.background = hex;
   document.getElementById(`color-label-${productId}`).textContent = colorName;
-  el.closest('.color-dropdown').querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  el.closest('.color-dropdown').classList.remove('open');
+  wrapEl.closest('.color-dropdown').querySelectorAll('.color-opt-wrap').forEach(o => o.classList.remove('selected'));
+  wrapEl.classList.add('selected');
+  wrapEl.closest('.color-dropdown').classList.remove('open');
+
+  // Renk varyant görseli varsa ana görseli değiştir
+  const product = allProducts.find(p => p.id === productId);
+  if (product?.colorImages?.[colorId]) {
+    const imgEl = document.getElementById(`main-img-${productId}`);
+    if (imgEl) {
+      imgEl.src = product.colorImages[colorId];
+      imgEl.style.display = 'block';
+      imgEl.onerror = function() {
+        this.src = product.image;
+        this.onerror = null;
+      };
+    }
+  }
 }
 
 // ── Cart Logic ─────────────────────────────────────
@@ -560,23 +612,29 @@ const STATUS_LABELS = {
 
 async function loadMyRequests() {
   const tbody = document.getElementById('requests-tbody');
-  tbody.innerHTML = '<tr><td colspan="6" class="loading-overlay"><span class="spinner"></span></td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="loading-overlay"><span class="spinner"></span></td></tr>';
   try {
     const requests = await api('/requests');
     if (!requests.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><h3>Henüz talep oluşturmadınız</h3><p>Ürün kataloğundan ürün ekleyerek ilk talebinizi oluşturun.</p></div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><h3>Henüz talep oluşturmadınız</h3><p>Ürün kataloğundan ürün ekleyerek ilk talebinizi oluşturun.</p></div></td></tr>`;
       return;
     }
     tbody.innerHTML = requests.map(r => {
       const [cls, label] = STATUS_LABELS[r.status] || ['', r.status];
       const date = new Date(r.created_at).toLocaleString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      const totalAmt = parseFloat(r.total_amount || 0);
+      const amountHtml = totalAmt > 0
+        ? `<strong>${totalAmt.toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2})} TRY</strong>`
+        : `<span style="color:var(--text-muted)">—</span>`;
       return `
         <tr>
           <td><strong>#${r.id}</strong></td>
           <td style="color:var(--text-muted);font-size:12px;">${date}</td>
           <td>${r.total_items} çeşit</td>
+          <td>${r.total_qty} adet</td>
+          <td style="font-size:12px;">${amountHtml}</td>
           <td><span class="badge ${cls}">${label}</span></td>
-          <td style="color:var(--text-muted);font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.notes || '—'}</td>
+          <td style="color:var(--text-muted);font-size:12px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.notes || '—'}</td>
           <td>
             <button class="btn btn-outline btn-sm" onclick="viewRequest(${r.id})">Detay</button>
             ${r.status === 'pending' ? `<button class="btn btn-danger btn-sm" style="margin-left:6px;" onclick="cancelRequest(${r.id})">İptal</button>` : ''}
@@ -589,39 +647,96 @@ async function loadMyRequests() {
   }
 }
 
+let activeRequestId = null;
+
 async function viewRequest(id) {
+  activeRequestId = id;
   document.getElementById('modal-body').innerHTML = '<div class="loading-overlay"><span class="spinner"></span></div>';
+  document.getElementById('chat-messages').innerHTML = '<div class="chat-empty"><span class="spinner"></span></div>';
   openModal('Talep #' + id);
   try {
     const r = await api('/requests/' + id);
     const [cls, label] = STATUS_LABELS[r.status] || ['', r.status];
     const date = new Date(r.created_at).toLocaleString('tr-TR');
+    const totalAmt = r.items.reduce((s, i) => s + (i.quantity * (i.unit_price || 0)), 0);
     document.getElementById('modal-body').innerHTML = `
-      <div style="margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <div style="margin-bottom:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
         <span class="badge ${cls}">${label}</span>
         <span style="font-size:12px;color:var(--text-muted);">${date}</span>
       </div>
-      ${r.notes ? `<div class="alert alert-info" style="margin-bottom:16px;"><strong>Notunuz:</strong> ${r.notes}</div>` : ''}
-      ${r.admin_notes ? `<div class="alert alert-success" style="margin-bottom:16px;"><strong>Admin Notu:</strong> ${r.admin_notes}</div>` : ''}
+      ${r.notes ? `<div class="alert alert-info" style="margin-bottom:12px;font-size:12px;"><strong>Notunuz:</strong> ${r.notes}</div>` : ''}
+      ${r.admin_notes ? `<div class="alert alert-success" style="margin-bottom:12px;font-size:12px;"><strong>Admin Notu:</strong> ${r.admin_notes}</div>` : ''}
       <table class="data-table" style="font-size:12px;">
-        <thead><tr><th>Ürün</th><th>Stok Kodu</th><th>Renk</th><th>Beden</th><th>Adet</th></tr></thead>
+        <thead><tr><th>Ürün</th><th>Renk</th><th>Boyut</th><th>Adet</th><th>Birim Fiyat</th></tr></thead>
         <tbody>
           ${r.items.map(i => `
             <tr>
-              <td><strong>${i.product_name}</strong></td>
-              <td style="font-family:monospace;color:var(--text-muted);">${i.product_sku}</td>
+              <td><strong>${i.product_name}</strong><br><span style="font-family:monospace;color:var(--text-muted);font-size:10px;">${i.product_sku}</span></td>
               <td>${i.variant_color}</td>
               <td>${i.variant_size || '—'}</td>
               <td><strong>${i.quantity}</strong></td>
+              <td>${i.unit_price ? parseFloat(i.unit_price).toFixed(2) + ' TRY' : '—'}</td>
             </tr>
           `).join('')}
         </tbody>
       </table>
+      ${totalAmt > 0 ? `<div style="text-align:right;margin-top:10px;font-size:13px;font-weight:700;color:var(--navy);">Toplam: ${totalAmt.toLocaleString('tr-TR',{minimumFractionDigits:2})} TRY</div>` : ''}
     `;
+    loadMessages(id);
   } catch (ex) {
     document.getElementById('modal-body').innerHTML = `<div class="alert alert-error">${ex.message}</div>`;
   }
 }
+
+async function loadMessages(requestId) {
+  try {
+    const messages = await api('/requests/' + requestId + '/messages');
+    renderMessages(messages);
+  } catch (ex) {
+    document.getElementById('chat-messages').innerHTML = `<div class="chat-empty" style="color:var(--danger);">${ex.message}</div>`;
+  }
+}
+
+function renderMessages(messages) {
+  const container = document.getElementById('chat-messages');
+  if (!messages.length) {
+    container.innerHTML = '<div class="chat-empty">Henüz mesaj yok.<br>Soru veya notlarınızı buradan iletebilirsiniz.</div>';
+    return;
+  }
+  container.innerHTML = messages.map(m => {
+    const isMe = m.sender_id === currentUser.id;
+    const time = new Date(m.created_at).toLocaleString('tr-TR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const senderName = isMe ? 'Siz' : (m.sender_role === 'admin' ? 'Yoi Studio' : m.company_name);
+    return `<div class="chat-msg ${isMe ? 'me' : 'other'}">
+      <div class="chat-bubble">${m.message.replace(/\n/g,'<br>')}</div>
+      <div class="chat-meta">${senderName} · ${time}</div>
+    </div>`;
+  }).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const btn = document.getElementById('chat-send-btn');
+  const msg = input.value.trim();
+  if (!msg || !activeRequestId) return;
+  btn.disabled = true;
+  try {
+    await api('/requests/' + activeRequestId + '/messages', { method: 'POST', body: { message: msg } });
+    input.value = '';
+    await loadMessages(activeRequestId);
+  } catch (ex) {
+    toast(ex.message, 'error');
+  } finally {
+    btn.disabled = false;
+    input.focus();
+  }
+}
+
+// Ctrl+Enter to send
+document.addEventListener('keydown', e => {
+  if (e.target.id === 'chat-input' && (e.ctrlKey || e.metaKey) && e.key === 'Enter') sendMessage();
+});
 
 async function cancelRequest(id) {
   if (!confirm('Bu talebi iptal etmek istediğinize emin misiniz?')) return;
@@ -640,6 +755,69 @@ function openModal(title) {
 }
 function closeModal() {
   document.getElementById('request-modal').classList.remove('open');
+}
+
+// ── Print / PDF ────────────────────────────────────
+function buildPrintHtml(title, bodyHtml, saveAsPdf = false) {
+  return `<!DOCTYPE html><html lang="tr"><head>
+    <meta charset="UTF-8"><title>${title}</title>
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0}
+      body{font-family:Arial,sans-serif;font-size:12px;color:#111;padding:24px}
+      h2{font-size:16px;margin-bottom:4px;color:#1a1a2e}
+      .meta{font-size:11px;color:#666;margin-bottom:16px}
+      table{width:100%;border-collapse:collapse;margin-top:12px}
+      th{background:#1a1a2e;color:#fff;padding:8px 10px;text-align:left;font-size:11px}
+      td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:12px}
+      tr:last-child td{border-bottom:none}
+      .total{text-align:right;margin-top:12px;font-weight:700;font-size:13px;color:#1a1a2e}
+      .footer{margin-top:24px;font-size:10px;color:#999;text-align:center;border-top:1px solid #e5e7eb;padding-top:10px}
+      @media print{body{padding:12px}@page{margin:1cm}}
+    </style>
+    ${saveAsPdf ? `<script>window.onload=function(){window.print();}<\/script>` : ''}
+  </head><body>${bodyHtml}</body></html>`;
+}
+
+function printCart(saveAsPdf = false) {
+  if (!cart.length) return;
+  const date = new Date().toLocaleString('tr-TR');
+  const company = currentUser?.company_name || '';
+  const totalQty = cart.reduce((s, i) => s + i.quantity, 0);
+  const totalAmt = cart.reduce((s, i) => s + i.quantity * (i.unit_price || 0), 0);
+  const rows = cart.map(i => `<tr>
+    <td><strong>${i.product_name}</strong><br><span style="color:#888;font-size:10px;">${i.product_sku}</span></td>
+    <td>${i.variant_color}</td>
+    <td>${i.variant_size || 'Standart'}</td>
+    <td style="text-align:center;">${i.quantity}</td>
+    <td style="text-align:right;">${i.unit_price ? i.unit_price.toFixed(2) + ' TRY' : '—'}</td>
+    <td style="text-align:right;">${i.unit_price ? (i.quantity * i.unit_price).toFixed(2) + ' TRY' : '—'}</td>
+  </tr>`).join('');
+
+  const body = `
+    <h2>Talep Listesi — ${company}</h2>
+    <div class="meta">Oluşturma tarihi: ${date} &nbsp;|&nbsp; ${cart.length} çeşit / ${totalQty} adet</div>
+    <table>
+      <thead><tr><th>Ürün</th><th>Renk</th><th>Boyut</th><th style="text-align:center;">Adet</th><th style="text-align:right;">Birim Fiyat</th><th style="text-align:right;">Toplam</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    ${totalAmt > 0 ? `<div class="total">Genel Toplam: ${totalAmt.toLocaleString('tr-TR',{minimumFractionDigits:2})} TRY</div>` : ''}
+    <div class="footer">Yoi Studio Dekorasyon — Slide Design Türkiye Distribütörü</div>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(buildPrintHtml('Talep Listesi', body, saveAsPdf));
+  win.document.close();
+  if (!saveAsPdf) setTimeout(() => { win.focus(); win.print(); }, 400);
+}
+
+function printRequestModal(saveAsPdf = false) {
+  const titleEl = document.getElementById('modal-title');
+  const bodyEl = document.getElementById('modal-body');
+  if (!bodyEl) return;
+  const title = titleEl?.textContent || 'Talep';
+  const win = window.open('', '_blank');
+  win.document.write(buildPrintHtml(title, `<h2>${title}</h2>` + bodyEl.innerHTML, saveAsPdf));
+  win.document.close();
+  if (!saveAsPdf) setTimeout(() => { win.focus(); win.print(); }, 400);
 }
 
 // ── Init ───────────────────────────────────────────

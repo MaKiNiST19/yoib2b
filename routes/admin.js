@@ -200,4 +200,21 @@ router.put('/products/:id/price', requireAdmin, async (req, res) => {
   }
 });
 
+// GET /api/admin/logs
+router.get('/logs', requireAdmin, async (req, res) => {
+  try {
+    const sql = getDb();
+    const { limit = 100, page = 1 } = req.query;
+    const offset = (page - 1) * limit;
+    const logs = await sql`
+      SELECT * FROM request_logs
+      ORDER BY created_at DESC
+      LIMIT ${Number(limit)} OFFSET ${Number(offset)}
+    `;
+    res.json(logs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

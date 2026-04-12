@@ -70,6 +70,29 @@ async function initDb() {
     )
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS request_logs (
+      id           SERIAL PRIMARY KEY,
+      request_id   INTEGER,
+      dealer_id    INTEGER NOT NULL REFERENCES users(id),
+      company_name TEXT NOT NULL,
+      action       TEXT NOT NULL,
+      details      JSONB,
+      created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS request_messages (
+      id         SERIAL PRIMARY KEY,
+      request_id INTEGER NOT NULL REFERENCES requests(id) ON DELETE CASCADE,
+      sender_id  INTEGER NOT NULL REFERENCES users(id),
+      sender_role TEXT NOT NULL,
+      message    TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+
   // Varsayılan admin kullanıcısı
   const existing = await sql`SELECT id FROM users WHERE role = 'admin' LIMIT 1`;
   if (existing.length === 0) {

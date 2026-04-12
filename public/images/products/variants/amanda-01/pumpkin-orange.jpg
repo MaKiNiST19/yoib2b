@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message><Key>product/ed7f59b6-0f38-46f8-b635-67172e7d3d60</Key><BucketName>slide</BucketName><Resource>/product/ed7f59b6-0f38-46f8-b635-67172e7d3d60</Resource><RequestId>18A5A605A82B5135</RequestId><HostId>fdaf6574-0017-4804-8c90-ff08a91735f3</HostId></Error>
