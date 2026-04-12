@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Yoi Studio Dekorasyon</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="toast-container"></div>
+<div class="drawer-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">Y</div>
+      <h1>Yoi Studio</h1>
+      <span>Admin Panel</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Yönetim</div>
+      <button class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-item" onclick="showPage('requests')" id="nav-requests">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+        Talepler
+        <span class="cart-badge" id="pending-badge" style="margin-left:auto;background:var(--gold);color:var(--navy);display:none;">0</span>
+      </button>
+      <button class="nav-item" onclick="showPage('dealers')" id="nav-dealers">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Bayiler
+      </button>
+      <button class="nav-item" onclick="showPage('prices')" id="nav-prices">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Fiyat Yönetimi
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="dealer-info">
+        <div class="name" id="admin-name">—</div>
+        <div class="role-badge">Admin</div>
+      </div>
+      <button class="nav-item" onclick="logout()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Çıkış Yap
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <div class="topbar-actions" id="topbar-actions"></div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- DASHBOARD -->
+      <div id="page-dashboard">
+        <div class="page-header">
+          <h2>Dashboard</h2>
+          <p>Talep sistemine genel bakış.</p>
+        </div>
+        <div class="stats-grid" id="stats-grid">
+          <div class="loading-overlay" style="grid-column:1/-1"><span class="spinner"></span></div>
+        </div>
+        <div class="page-header" style="margin-top:8px;">
+          <h2 style="font-size:16px;">Son Talepler</h2>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>No</th><th>Firma</th><th>Tarih</th><th>Ürün</th><th>Durum</th><th></th></tr></thead>
+            <tbody id="recent-tbody"><tr><td colspan="6" class="loading-overlay"><span class="spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REQUESTS -->
+      <div id="page-requests" style="display:none;">
+        <div class="page-header">
+          <h2>Tüm Talepler</h2>
+          <p>Bayilerden gelen talepleri inceleyin ve onaylayın.</p>
+        </div>
+        <div class="filter-bar" style="margin-bottom:16px;">
+          <div class="cat-tabs" id="status-filter-tabs">
+            <button class="cat-tab active" onclick="setStatusFilter(null,this)">Tümü</button>
+            <button class="cat-tab" onclick="setStatusFilter('pending',this)">Beklemede</button>
+            <button class="cat-tab" onclick="setStatusFilter('approved',this)">Onaylandı</button>
+            <button class="cat-tab" onclick="setStatusFilter('processing',this)">İşlemde</button>
+            <button class="cat-tab" onclick="setStatusFilter('completed',this)">Tamamlandı</button>
+            <button class="cat-tab" onclick="setStatusFilter('rejected',this)">Reddedildi</button>
+          </div>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>No</th><th>Firma</th><th>E-posta</th><th>Tarih</th><th>Ürün</th><th>Durum</th><th></th></tr></thead>
+            <tbody id="all-requests-tbody"><tr><td colspan="7" class="loading-overlay"><span class="spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DEALERS -->
+      <div id="page-dealers" style="display:none;">
+        <div class="page-header">
+          <h2>Bayi Yönetimi</h2>
+          <p>Yetkili bayileri yönetin.</p>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Firma</th><th>Kullanıcı</th><th>E-posta</th><th>Şehir</th><th>Toplam Talep</th><th>Bekleyen</th><th>Durum</th><th></th></tr></thead>
+            <tbody id="dealers-tbody"><tr><td colspan="8" class="loading-overlay"><span class="spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PRICES -->
+      <div id="page-prices" style="display:none;">
+        <div class="page-header">
+          <h2>Fiyat Yönetimi</h2>
+          <p>Ürün birim fiyatlarını belirleyin. Fiyatlar bayi talep listesinde görünür.</p>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Ürün</th><th>Stok Kodu</th><th>Birim Fiyat</th><th>Para Birimi</th><th></th></tr></thead>
+            <tbody id="prices-tbody"><tr><td colspan="5" class="loading-overlay"><span class="spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ── Request Detail Modal ───────────── -->
+<div class="modal-overlay" id="request-modal">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+      <h3 id="req-modal-title">Talep Detayı</h3>
+      <button class="drawer-close" onclick="closeModal('request-modal')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="req-modal-body"></div>
+    <div class="modal-footer" id="req-modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('request-modal')">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Create / Edit Dealer Modal ─────── -->
+<div class="modal-overlay" id="dealer-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      <h3 id="dealer-modal-title">Yeni Bayi</h3>
+      <button class="drawer-close" onclick="closeModal('dealer-modal')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="dealer-form-error" class="alert alert-error" style="display:none;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Firma Adı *</label>
+          <input type="text" class="form-control" id="d-company">
+        </div>
+        <div class="form-group">
+          <label>Kullanıcı Adı *</label>
+          <input type="text" class="form-control" id="d-username" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Şifre *</label>
+          <input type="password" class="form-control" id="d-password" autocomplete="new-password" placeholder="En az 6 karakter">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>E-posta *</label>
+          <input type="email" class="form-control" id="d-email">
+        </div>
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="tel" class="form-control" id="d-phone">
+        </div>
+        <div class="form-group">
+          <label>Şehir</label>
+          <input type="text" class="form-control" id="d-city">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('dealer-modal')">İptal</button>
+      <button class="btn btn-primary" id="dealer-save-btn" onclick="saveDealer()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Auth Guard ─────────────────────────────────────
+const token = localStorage.getItem('ys_token');
+const currentUser = JSON.parse(localStorage.getItem('ys_user') || 'null');
+if (!token || !currentUser) { window.location.href = '/login'; }
+if (currentUser?.role !== 'admin') { window.location.href = '/'; }
+document.getElementById('admin-name').textContent = currentUser?.company_name || 'Admin';
+
+// ── API Helper ─────────────────────────────────────
+async function api(path, opts = {}) {
+  const res = await fetch('/api' + path, {
+    ...opts,
+    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Hata oluştu');
+  return data;
+}
+
+function toast(msg, type = '') {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.innerHTML = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ── Navigation ─────────────────────────────────────
+const PAGES = ['dashboard','requests','dealers','prices'];
+function showPage(page) {
+  PAGES.forEach(p => {
+    document.getElementById('page-' + p).style.display = p === page ? '' : 'none';
+    document.getElementById('nav-' + p)?.classList.toggle('active', p === page);
+  });
+  const titles = { dashboard:'Dashboard', requests:'Talepler', dealers:'Bayi Yönetimi', prices:'Fiyat Yönetimi' };
+  document.getElementById('topbar-title').textContent = titles[page] || page;
+
+  // Topbar actions
+  const actions = document.getElementById('topbar-actions');
+  if (page === 'dealers') {
+    actions.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openNewDealer()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Yeni Bayi</button>`;
+  } else {
+    actions.innerHTML = '';
+  }
+
+  const loaders = { dashboard: loadDashboard, requests: loadRequests, dealers: loadDealers, prices: loadPrices };
+  if (loaders[page]) loaders[page]();
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+function logout() {
+  localStorage.clear();
+  window.location.href = '/login';
+}
+
+// ── Modal ──────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Status helpers ─────────────────────────────────
+const STATUS_LABELS = {
+  pending:    ['badge-pending',    'Beklemede'],
+  approved:   ['badge-approved',   'Onaylandı'],
+  processing: ['badge-processing', 'İşlemde'],
+  completed:  ['badge-completed',  'Tamamlandı'],
+  rejected:   ['badge-rejected',   'Reddedildi'],
+};
+
+// ── DASHBOARD ──────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const [stats, requests] = await Promise.all([api('/admin/stats'), api('/requests?limit=8')]);
+
+    // Stats
+    document.getElementById('stats-grid').innerHTML = `
+      <div class="stat-card"><div class="stat-icon navy"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div><div class="stat-label">Aktif Bayi</div><div class="stat-value">${stats.total_dealers}</div></div></div>
+      <div class="stat-card"><div class="stat-icon gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg></div><div><div class="stat-label">Toplam Talep</div><div class="stat-value">${stats.total_requests}</div></div></div>
+      <div class="stat-card"><div class="stat-icon red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="stat-label">Bekleyen</div><div class="stat-value">${stats.pending_requests}</div></div></div>
+      <div class="stat-card"><div class="stat-icon blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></div><div><div class="stat-label">İşlemde</div><div class="stat-value">${stats.processing_requests}</div></div></div>
+      <div class="stat-card"><div class="stat-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="stat-label">Tamamlanan</div><div class="stat-value">${stats.completed_requests}</div></div></div>
+    `;
+
+    // Pending badge
+    if (stats.pending_requests > 0) {
+      const badge = document.getElementById('pending-badge');
+      badge.textContent = stats.pending_requests;
+      badge.style.display = 'flex';
+    }
+
+    // Recent requests
+    renderRequestsTable(requests, 'recent-tbody', 6);
+  } catch (ex) {
+    document.getElementById('stats-grid').innerHTML = `<div class="alert alert-error">${ex.message}</div>`;
+  }
+}
+
+// ── REQUESTS ───────────────────────────────────────
+let requestStatusFilter = null;
+
+function setStatusFilter(status, el) {
+  requestStatusFilter = status;
+  document.querySelectorAll('#status-filter-tabs .cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  loadRequests();
+}
+
+async function loadRequests() {
+  const tbody = document.getElementById('all-requests-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" class="loading-overlay"><span class="spinner"></span></td></tr>';
+  try {
+    const url = '/requests' + (requestStatusFilter ? '?status=' + requestStatusFilter : '');
+    const requests = await api(url);
+    renderRequestsTable(requests, 'all-requests-tbody', 7);
+  } catch (ex) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="alert alert-error">${ex.message}</div></td></tr>`;
+  }
+}
+
+function renderRequestsTable(requests, tbodyId, cols) {
+  const tbody = document.getElementById(tbodyId);
+  if (!requests.length) {
+    tbody.innerHTML = `<tr><td colspan="${cols}"><div class="empty-state" style="padding:40px;"><h3>Talep bulunamadı</h3></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = requests.map(r => {
+    const [cls, label] = STATUS_LABELS[r.status] || ['', r.status];
+    const date = new Date(r.created_at).toLocaleString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    if (cols === 6) {
+      return `<tr>
+        <td><strong>#${r.id}</strong></td>
+        <td>${r.company_name}</td>
+        <td style="color:var(--text-muted);font-size:12px;">${date}</td>
+        <td>${r.total_items} çeşit</td>
+        <td><span class="badge ${cls}">${label}</span></td>
+        <td><button class="btn btn-outline btn-sm" onclick="viewRequest(${r.id})">Detay</button></td>
+      </tr>`;
+    }
+    return `<tr>
+      <td><strong>#${r.id}</strong></td>
+      <td><strong>${r.company_name}</strong></td>
+      <td style="color:var(--text-muted);font-size:12px;">${r.dealer_email}</td>
+      <td style="color:var(--text-muted);font-size:12px;">${date}</td>
+      <td>${r.total_items} çeşit</td>
+      <td><span class="badge ${cls}">${label}</span></td>
+      <td><button class="btn btn-outline btn-sm" onclick="viewRequest(${r.id})">Detay</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function viewRequest(id) {
+  document.getElementById('req-modal-body').innerHTML = '<div class="loading-overlay"><span class="spinner"></span></div>';
+  document.getElementById('req-modal-footer').innerHTML = '<button class="btn btn-outline" onclick="closeModal(\'request-modal\')">Kapat</button>';
+  document.getElementById('req-modal-title').textContent = 'Talep #' + id;
+  openModal('request-modal');
+
+  try {
+    const r = await api('/requests/' + id);
+    const [cls, label] = STATUS_LABELS[r.status] || ['', r.status];
+    const date = new Date(r.created_at).toLocaleString('tr-TR');
+
+    document.getElementById('req-modal-body').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+        <div style="background:#F8F9FB;padding:12px;border-radius:8px;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Firma</div>
+          <div style="font-weight:700;">${r.company_name}</div>
+        </div>
+        <div style="background:#F8F9FB;padding:12px;border-radius:8px;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">E-posta</div>
+          <div>${r.dealer_email}</div>
+        </div>
+        ${r.dealer_phone ? `<div style="background:#F8F9FB;padding:12px;border-radius:8px;"><div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Telefon</div><div>${r.dealer_phone}</div></div>` : ''}
+        ${r.dealer_city ? `<div style="background:#F8F9FB;padding:12px;border-radius:8px;"><div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Şehir</div><div>${r.dealer_city}</div></div>` : ''}
+        <div style="background:#F8F9FB;padding:12px;border-radius:8px;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Durum</div>
+          <span class="badge ${cls}">${label}</span>
+        </div>
+        <div style="background:#F8F9FB;padding:12px;border-radius:8px;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Tarih</div>
+          <div style="font-size:12px;">${date}</div>
+        </div>
+      </div>
+      ${r.notes ? `<div class="alert alert-info" style="margin-bottom:12px;"><strong>Bayi Notu:</strong> ${r.notes}</div>` : ''}
+      ${r.admin_notes ? `<div class="alert alert-success" style="margin-bottom:12px;"><strong>Admin Notu:</strong> ${r.admin_notes}</div>` : ''}
+      <table class="data-table" style="font-size:12px;margin-bottom:16px;">
+        <thead><tr><th>Ürün Adı</th><th>Stok Kodu</th><th>Renk</th><th>Beden</th><th style="text-align:center;">Adet</th></tr></thead>
+        <tbody>
+          ${r.items.map(i => `
+            <tr>
+              <td><strong>${i.product_name}</strong></td>
+              <td style="font-family:monospace;color:var(--text-muted);">${i.product_sku}</td>
+              <td>${i.variant_color}</td>
+              <td>${i.variant_size || '—'}</td>
+              <td style="text-align:center;font-weight:700;">${i.quantity}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <div class="form-group">
+        <label>Durum Güncelle</label>
+        <select class="form-control" id="status-select" style="max-width:200px;">
+          <option value="pending"    ${r.status==='pending'?'selected':''}>Beklemede</option>
+          <option value="approved"   ${r.status==='approved'?'selected':''}>Onaylandı</option>
+          <option value="processing" ${r.status==='processing'?'selected':''}>İşlemde</option>
+          <option value="completed"  ${r.status==='completed'?'selected':''}>Tamamlandı</option>
+          <option value="rejected"   ${r.status==='rejected'?'selected':''}>Reddedildi</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Admin Notu</label>
+        <textarea class="form-control" id="admin-notes-input" rows="2" placeholder="Bayi'ye iletmek istediğiniz not...">${r.admin_notes || ''}</textarea>
+      </div>
+    `;
+
+    document.getElementById('req-modal-footer').innerHTML = `
+      <button class="btn btn-outline" onclick="closeModal('request-modal')">Kapat</button>
+      <button class="btn btn-primary" onclick="updateRequestStatus(${r.id})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Kaydet
+      </button>
+    `;
+  } catch (ex) {
+    document.getElementById('req-modal-body').innerHTML = `<div class="alert alert-error">${ex.message}</div>`;
+  }
+}
+
+async function updateRequestStatus(id) {
+  const status = document.getElementById('status-select').value;
+  const admin_notes = document.getElementById('admin-notes-input').value.trim();
+  try {
+    await api('/admin/requests/' + id + '/status', { method: 'PATCH', body: { status, admin_notes: admin_notes || null } });
+    toast('Talep durumu güncellendi.', 'success');
+    closeModal('request-modal');
+    // Refresh active page
+    if (document.getElementById('page-requests').style.display !== 'none') loadRequests();
+    if (document.getElementById('page-dashboard').style.display !== 'none') loadDashboard();
+  } catch (ex) {
+    toast(ex.message, 'error');
+  }
+}
+
+// ── DEALERS ────────────────────────────────────────
+let editDealerId = null;
+
+async function loadDealers() {
+  const tbody = document.getElementById('dealers-tbody');
+  tbody.innerHTML = '<tr><td colspan="8" class="loading-overlay"><span class="spinner"></span></td></tr>';
+  try {
+    const dealers = await api('/admin/dealers');
+    if (!dealers.length) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state" style="padding:40px;"><h3>Henüz bayi yok</h3><p>Yeni Bayi butonuna tıklayarak ekleyin.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = dealers.map(d => `
+      <tr>
+        <td><strong>${d.company_name}</strong></td>
+        <td style="font-family:monospace;color:var(--text-muted);font-size:12px;">${d.username}</td>
+        <td style="color:var(--text-muted);font-size:12px;">${d.email}</td>
+        <td style="color:var(--text-muted);font-size:12px;">${d.city || '—'}</td>
+        <td style="text-align:center;">${d.total_requests}</td>
+        <td style="text-align:center;">${d.pending_requests > 0 ? `<span class="badge badge-pending">${d.pending_requests}</span>` : '—'}</td>
+        <td><span class="badge ${d.active ? 'badge-active' : 'badge-inactive'}">${d.active ? 'Aktif' : 'Pasif'}</span></td>
+        <td>
+          <button class="btn btn-outline btn-sm" onclick="openEditDealer(${JSON.stringify(d).replace(/"/g,'&quot;')})">Düzenle</button>
+          ${d.active ? `<button class="btn btn-danger btn-sm" style="margin-left:6px;" onclick="deactivateDealer(${d.id},'${d.company_name}')">Pasif</button>` : ''}
+        </td>
+      </tr>
+    `).join('');
+  } catch (ex) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="alert alert-error">${ex.message}</div></td></tr>`;
+  }
+}
+
+function openNewDealer() {
+  editDealerId = null;
+  document.getElementById('dealer-modal-title').textContent = 'Yeni Bayi';
+  document.getElementById('d-company').value = '';
+  document.getElementById('d-username').value = '';
+  document.getElementById('d-password').value = '';
+  document.getElementById('d-email').value = '';
+  document.getElementById('d-phone').value = '';
+  document.getElementById('d-city').value = '';
+  document.getElementById('d-username').disabled = false;
+  document.getElementById('d-password').placeholder = 'En az 6 karakter';
+  document.getElementById('dealer-form-error').style.display = 'none';
+  openModal('dealer-modal');
+}
+
+function openEditDealer(dealer) {
+  editDealerId = dealer.id;
+  document.getElementById('dealer-modal-title').textContent = 'Bayi Düzenle';
+  document.getElementById('d-company').value = dealer.company_name;
+  document.getElementById('d-username').value = dealer.username;
+  document.getElementById('d-username').disabled = true;
+  document.getElementById('d-password').value = '';
+  document.getElementById('d-password').placeholder = 'Boş bırakırsanız değişmez';
+  document.getElementById('d-email').value = dealer.email;
+  document.getElementById('d-phone').value = dealer.phone || '';
+  document.getElementById('d-city').value = dealer.city || '';
+  document.getElementById('dealer-form-error').style.display = 'none';
+  openModal('dealer-modal');
+}
+
+async function saveDealer() {
+  const errEl = document.getElementById('dealer-form-error');
+  errEl.style.display = 'none';
+  const btn = document.getElementById('dealer-save-btn');
+  btn.disabled = true;
+
+  const body = {
+    company_name: document.getElementById('d-company').value.trim(),
+    email: document.getElementById('d-email').value.trim(),
+    phone: document.getElementById('d-phone').value.trim(),
+    city: document.getElementById('d-city').value.trim(),
+  };
+  const password = document.getElementById('d-password').value;
+  if (password) body.password = password;
+
+  try {
+    if (!editDealerId) {
+      body.username = document.getElementById('d-username').value.trim();
+      if (!body.username || !body.company_name || !body.email || !password) throw new Error('Zorunlu alanları doldurun');
+      await api('/admin/dealers', { method: 'POST', body });
+      toast('Bayi oluşturuldu.', 'success');
+    } else {
+      await api('/admin/dealers/' + editDealerId, { method: 'PUT', body });
+      toast('Bayi güncellendi.', 'success');
+    }
+    closeModal('dealer-modal');
+    loadDealers();
+  } catch (ex) {
+    errEl.textContent = ex.message;
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function deactivateDealer(id, name) {
+  if (!confirm(`"${name}" bayisini pasif yapmak istediğinize emin misiniz?`)) return;
+  try {
+    await api('/admin/dealers/' + id, { method: 'DELETE' });
+    toast('Bayi pasif yapıldı.', 'success');
+    loadDealers();
+  } catch (ex) {
+    toast(ex.message, 'error');
+  }
+}
+
+// ── PRICES ─────────────────────────────────────────
+async function loadPrices() {
+  const tbody = document.getElementById('prices-tbody');
+  tbody.innerHTML = '<tr><td colspan="5" class="loading-overlay"><span class="spinner"></span></td></tr>';
+  try {
+    const products = await api('/admin/products/prices');
+    tbody.innerHTML = products.map(p => `
+      <tr id="price-row-${p.id}">
+        <td><strong>${p.name}</strong></td>
+        <td style="font-family:monospace;font-size:12px;color:var(--text-muted);">${p.sku}</td>
+        <td>
+          <input type="number" class="form-control" id="price-${p.id}" value="${p.price ?? ''}" placeholder="—" step="0.01" min="0" style="max-width:120px;">
+        </td>
+        <td>
+          <select class="form-control" id="curr-${p.id}" style="max-width:90px;">
+            <option value="EUR" ${p.currency==='EUR'?'selected':''}>EUR</option>
+            <option value="USD" ${p.currency==='USD'?'selected':''}>USD</option>
+            <option value="TRY" ${p.currency==='TRY'?'selected':''}>TRY</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn btn-primary btn-sm" onclick="savePrice('${p.id}')">Kaydet</button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (ex) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="alert alert-error">${ex.message}</div></td></tr>`;
+  }
+}
+
+async function savePrice(productId) {
+  const price = parseFloat(document.getElementById('price-' + productId).value);
+  const currency = document.getElementById('curr-' + productId).value;
+  if (isNaN(price) || price < 0) { toast('Geçerli bir fiyat girin.', 'error'); return; }
+  try {
+    await api('/admin/products/' + productId + '/price', { method: 'PUT', body: { price, currency } });
+    toast('Fiyat güncellendi.', 'success');
+  } catch (ex) {
+    toast(ex.message, 'error');
+  }
+}
+
+// ── Init ───────────────────────────────────────────
+loadDashboard();
+</script>
+</body>
+</html>

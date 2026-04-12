@@ -1,0 +1,6 @@
+node_modules/
+.env
+data/talep.db
+data/talep.db-shm
+data/talep.db-wal
+.vercel/

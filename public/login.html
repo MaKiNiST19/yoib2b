@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giriş — Yoi Studio Talep Sistemi</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="login-page">
+
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo-mark" style="width:56px;height:56px;background:#C9A84C;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-weight:800;font-size:22px;color:#1A1A2E;">Y</div>
+      <h1>Yoi Studio Dekorasyon</h1>
+      <p>Slide Design — Türkiye Resmi Distribütörü</p>
+    </div>
+    <div class="login-body">
+      <h2>Hoş Geldiniz</h2>
+      <p>Bayi hesabınıza giriş yaparak ürün talebi oluşturabilirsiniz.</p>
+
+      <div id="login-error" class="alert alert-error" style="display:none;"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Kullanıcı Adı</label>
+          <input type="text" id="username" class="form-control" placeholder="kullanıcı adınız" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Şifre</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="login-btn">
+          Giriş Yap
+        </button>
+      </form>
+
+      <p style="text-align:center;margin-top:24px;font-size:12px;color:#9CA3AF;">
+        Hesap bilgilerinizi unuttuysanız yöneticinizle iletişime geçin.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Already logged in?
+    const token = localStorage.getItem('ys_token');
+    const user = JSON.parse(localStorage.getItem('ys_user') || 'null');
+    if (token && user) {
+      window.location.href = user.role === 'admin' ? '/admin' : '/';
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('login-btn');
+      const err = document.getElementById('login-error');
+      err.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Giriş yapılıyor...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('username').value.trim(),
+            password: document.getElementById('password').value,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Giriş başarısız');
+        localStorage.setItem('ys_token', data.token);
+        localStorage.setItem('ys_user', JSON.stringify(data.user));
+        window.location.href = data.user.role === 'admin' ? '/admin' : '/';
+      } catch (ex) {
+        err.textContent = ex.message;
+        err.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Giriş Yap';
+      }
+    });
+  </script>
+</body>
+</html>
