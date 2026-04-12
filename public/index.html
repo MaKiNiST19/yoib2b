@@ -535,7 +535,7 @@ function renderCart() {
             <span class="qty-val">${item.quantity}</span>
             <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
           </div>
-          ${item.unit_price ? `<span style="font-size:12px;color:var(--text-muted);">${item.unit_price.toFixed(2)} ${item.currency}</span>` : ''}
+          ${item.unit_price ? `<span style="font-size:12px;color:var(--text-muted);">${parseFloat(item.unit_price).toFixed(2)} ${item.currency}</span>` : ''}
         </div>
       </div>
       <button class="cart-item-remove" onclick="removeFromCart(${idx})" title="Kaldır">
@@ -789,7 +789,7 @@ function printCart(saveAsPdf = false) {
     <td>${i.variant_color}</td>
     <td>${i.variant_size || 'Standart'}</td>
     <td style="text-align:center;">${i.quantity}</td>
-    <td style="text-align:right;">${i.unit_price ? i.unit_price.toFixed(2) + ' TRY' : '—'}</td>
+    <td style="text-align:right;">${i.unit_price ? parseFloat(i.unit_price).toFixed(2) + ' TRY' : '—'}</td>
     <td style="text-align:right;">${i.unit_price ? (i.quantity * i.unit_price).toFixed(2) + ' TRY' : '—'}</td>
   </tr>`).join('');
 
