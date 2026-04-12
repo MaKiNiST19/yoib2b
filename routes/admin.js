@@ -161,7 +161,7 @@ router.get('/products/prices', requireAdmin, async (req, res) => {
             sku: p.sku,
             size,
             price: priceMap[p.id]?.[size]?.price ?? null,
-            currency: priceMap[p.id]?.[size]?.currency ?? 'EUR',
+            currency: priceMap[p.id]?.[size]?.currency ?? 'TRY',
           });
         }
       } else {
@@ -171,7 +171,7 @@ router.get('/products/prices', requireAdmin, async (req, res) => {
           sku: p.sku,
           size: null,
           price: priceMap[p.id]?.['']?.price ?? null,
-          currency: priceMap[p.id]?.['']?.currency ?? 'EUR',
+          currency: priceMap[p.id]?.['']?.currency ?? 'TRY',
         });
       }
     }
@@ -189,7 +189,7 @@ router.put('/products/:id/price', requireAdmin, async (req, res) => {
     const sql = getDb();
     await sql`
       INSERT INTO product_prices (product_id, variant_size, price, currency, updated_at)
-      VALUES (${req.params.id}, ${variantSize}, ${price}, ${currency || 'EUR'}, NOW())
+      VALUES (${req.params.id}, ${variantSize}, ${price}, ${currency || 'TRY'}, NOW())
       ON CONFLICT (product_id, variant_size) DO UPDATE
         SET price = EXCLUDED.price, currency = EXCLUDED.currency, updated_at = NOW()
     `;

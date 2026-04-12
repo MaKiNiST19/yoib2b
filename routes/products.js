@@ -35,15 +35,15 @@ router.get('/', authenticate, async (req, res) => {
         p.sizes.forEach(s => {
           sizePrices[s] = {
             price: priceMap[p.id]?.[s]?.price ?? null,
-            currency: priceMap[p.id]?.[s]?.currency ?? 'EUR',
+            currency: priceMap[p.id]?.[s]?.currency ?? 'TRY',
           };
         });
-        return { ...p, price: null, currency: 'EUR', sizePrices };
+        return { ...p, price: null, currency: 'TRY', sizePrices };
       }
       return {
         ...p,
         price: priceMap[p.id]?.['']?.price ?? null,
-        currency: priceMap[p.id]?.['']?.currency ?? 'EUR',
+        currency: priceMap[p.id]?.['']?.currency ?? 'TRY',
       };
     }));
   } catch (err) {
@@ -68,7 +68,7 @@ router.get('/:id', authenticate, async (req, res) => {
     res.json({
       ...product,
       price: priceRow?.price ?? null,
-      currency: priceRow?.currency ?? 'EUR',
+      currency: priceRow?.currency ?? 'TRY',
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

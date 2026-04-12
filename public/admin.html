@@ -595,9 +595,9 @@ async function loadPrices() {
           </td>
           <td>
             <select class="form-control" id="curr-${rowKey}" style="max-width:80px;">
+              <option value="TRY" ${(p.currency==='TRY'||!p.currency)?'selected':''}>TRY</option>
               <option value="EUR" ${p.currency==='EUR'?'selected':''}>EUR</option>
               <option value="USD" ${p.currency==='USD'?'selected':''}>USD</option>
-              <option value="TRY" ${p.currency==='TRY'?'selected':''}>TRY</option>
             </select>
           </td>
           <td>
