@@ -53,9 +53,14 @@ async function initDb() {
       variant_size  TEXT,
       quantity      INTEGER NOT NULL DEFAULT 1,
       unit_price    NUMERIC,
+      image_url     TEXT,
       notes         TEXT
     )
   `;
+
+  // Add image_url column if missing (for existing databases)
+  await sql`ALTER TABLE request_items ADD COLUMN IF NOT EXISTS image_url TEXT`.catch(() => {});
+
 
   // product_prices: (product_id, variant_size) composite PK
   // variant_size = 'STD' for standard (non-size) products, 'S'/'M'/'L'/'XL' for Mirror of Love
