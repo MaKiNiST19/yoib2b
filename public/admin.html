@@ -269,19 +269,25 @@
 
 <script>
 // ── Auth Guard ─────────────────────────────────────
-const token = localStorage.getItem('ys_token');
-const currentUser = JSON.parse(localStorage.getItem('ys_user') || 'null');
-if (!token || !currentUser) { window.location.href = '/login'; }
+let currentUser = JSON.parse(localStorage.getItem('ys_user') || 'null');
+if (!localStorage.getItem('ys_token') || !currentUser) { window.location.href = '/login'; }
 if (currentUser?.role !== 'admin') { window.location.href = '/'; }
 document.getElementById('admin-name').textContent = currentUser?.company_name || 'Admin';
 
 // ── API Helper ─────────────────────────────────────
 async function api(path, opts = {}) {
+  const tok = localStorage.getItem('ys_token');
   const res = await fetch('/api' + path, {
     ...opts,
-    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    headers: { 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json', ...(opts.headers || {}) },
     body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
+  if (res.status === 401) {
+    localStorage.clear();
+    alert('Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.');
+    window.location.href = '/login';
+    throw new Error('Oturum süresi doldu');
+  }
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'Hata oluştu');
   return data;
