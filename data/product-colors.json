@@ -1,0 +1,890 @@
+{
+  "images": {
+    "ambrogio-01": {
+      "milky-white": "/images/products/variants/ambrogio-01/milky-white.jpg",
+      "jet-black": "/images/products/variants/ambrogio-01/jet-black.jpg",
+      "elephant-grey": "/images/products/variants/ambrogio-01/elephant-grey.jpg",
+      "chocolate-brown": "/images/products/variants/ambrogio-01/chocolate-brown.jpg",
+      "argil-grey": "/images/products/variants/ambrogio-01/argil-grey.jpg",
+      "dove-grey": "/images/products/variants/ambrogio-01/dove-grey.jpg",
+      "powder-blue": "/images/products/variants/ambrogio-01/powder-blue.jpg",
+      "malva-green": "/images/products/variants/ambrogio-01/malva-green.jpg",
+      "lime-green": "/images/products/variants/ambrogio-01/lime-green.jpg",
+      "saffron-yellow": "/images/products/variants/ambrogio-01/saffron-yellow.jpg",
+      "pumpkin-orange": "/images/products/variants/ambrogio-01/pumpkin-orange.jpg",
+      "flame-red": "/images/products/variants/ambrogio-01/flame-red.jpg",
+      "sweet-fuchsia": "/images/products/variants/ambrogio-01/sweet-fuchsia.jpg",
+      "coconut-grey": "/images/products/variants/ambrogio-01/coconut-grey.jpg",
+      "grapes-blue": "/images/products/variants/ambrogio-01/grapes-blue.jpg",
+      "light-white": "/images/products/variants/ambrogio-01/light-white.jpg",
+      "glamour-black-glossy-finish": "/images/products/variants/ambrogio-01/glamour-black-glossy-finish.jpg",
+      "metallic-gold-glossy-finish": "/images/products/variants/ambrogio-01/metallic-gold-glossy-finish.jpg",
+      "metallic-silver-glossy-finish": "/images/products/variants/ambrogio-01/metallic-silver-glossy-finish.jpg",
+      "metallic-copper-glossy-finish": "/images/products/variants/ambrogio-01/metallic-copper-glossy-finish.jpg",
+      "gold": "/images/products/variants/ambrogio-01/gold.jpg",
+      "silver": "/images/products/variants/ambrogio-01/silver.jpg"
+    },
+    "amanda-01": {
+      "milky-white": "/images/products/variants/amanda-01/milky-white.jpg",
+      "jet-black": "/images/products/variants/amanda-01/jet-black.jpg",
+      "elephant-grey": "/images/products/variants/amanda-01/elephant-grey.jpg",
+      "argil-grey": "/images/products/variants/amanda-01/argil-grey.jpg",
+      "powder-blue": "/images/products/variants/amanda-01/powder-blue.jpg",
+      "lime-green": "/images/products/variants/amanda-01/lime-green.jpg",
+      "pumpkin-orange": "/images/products/variants/amanda-01/pumpkin-orange.jpg",
+      "flame-red": "/images/products/variants/amanda-01/flame-red.jpg",
+      "vanity-grey-glossy-finish": "/images/products/variants/amanda-01/vanity-grey-glossy-finish.jpg"
+    },
+    "amore": {
+      "milky-white": "/images/products/variants/amore/milky-white.jpg",
+      "jet-black": "/images/products/variants/amore/jet-black.jpg",
+      "elephant-grey": "/images/products/variants/amore/elephant-grey.jpg",
+      "chocolate-brown": "/images/products/variants/amore/chocolate-brown.jpg",
+      "argil-grey": "/images/products/variants/amore/argil-grey.jpg",
+      "dove-grey": "/images/products/variants/amore/dove-grey.jpg",
+      "powder-blue": "/images/products/variants/amore/powder-blue.jpg",
+      "malva-green": "/images/products/variants/amore/malva-green.jpg",
+      "lime-green": "/images/products/variants/amore/lime-green.jpg",
+      "saffron-yellow": "/images/products/variants/amore/saffron-yellow.jpg",
+      "pumpkin-orange": "/images/products/variants/amore/pumpkin-orange.jpg",
+      "flame-red": "/images/products/variants/amore/flame-red.jpg",
+      "sweet-fuchsia": "/images/products/variants/amore/sweet-fuchsia.jpg"
+    },
+    "wow": {
+      "milky-white": "/images/products/variants/wow/milky-white.jpg",
+      "jet-black": "/images/products/variants/wow/jet-black.jpg",
+      "elephant-grey": "/images/products/variants/wow/elephant-grey.jpg",
+      "chocolate-brown": "/images/products/variants/wow/chocolate-brown.jpg",
+      "argil-grey": "/images/products/variants/wow/argil-grey.jpg",
+      "dove-grey": "/images/products/variants/wow/dove-grey.jpg",
+      "powder-blue": "/images/products/variants/wow/powder-blue.jpg",
+      "malva-green": "/images/products/variants/wow/malva-green.jpg",
+      "lime-green": "/images/products/variants/wow/lime-green.jpg",
+      "saffron-yellow": "/images/products/variants/wow/saffron-yellow.jpg",
+      "pumpkin-orange": "/images/products/variants/wow/pumpkin-orange.jpg",
+      "flame-red": "/images/products/variants/wow/flame-red.jpg",
+      "sweet-fuchsia": "/images/products/variants/wow/sweet-fuchsia.jpg"
+    },
+    "threebu": {
+      "jet-black": "/images/products/variants/threebu/jet-black.jpg",
+      "lime-green": "/images/products/variants/threebu/lime-green.jpg",
+      "saffron-yellow": "/images/products/variants/threebu/saffron-yellow.jpg",
+      "namibian-desert": "/images/products/variants/threebu/namibian-desert.jpg",
+      "savannah-land": "/images/products/variants/threebu/savannah-land.jpg",
+      "sahara-sand": "/images/products/variants/threebu/sahara-sand.jpg"
+    },
+    "threebu-pot": {
+      "milky-white": "/images/products/variants/threebu-pot/milky-white.jpg",
+      "flame-red": "/images/products/variants/threebu-pot/flame-red.jpg",
+      "savannah-land": "/images/products/variants/threebu-pot/savannah-land.jpg"
+    },
+    "kroko-01": {
+      "milky-white": "/images/products/variants/kroko-01/milky-white.jpg",
+      "jet-black": "/images/products/variants/kroko-01/jet-black.jpg",
+      "elephant-grey": "/images/products/variants/kroko-01/elephant-grey.jpg",
+      "chocolate-brown": "/images/products/variants/kroko-01/chocolate-brown.jpg",
+      "argil-grey": "/images/products/variants/kroko-01/argil-grey.jpg",
+      "dove-grey": "/images/products/variants/kroko-01/dove-grey.jpg",
+      "malva-green": "/images/products/variants/kroko-01/malva-green.jpg",
+      "lime-green": "/images/products/variants/kroko-01/lime-green.jpg",
+      "saffron-yellow": "/images/products/variants/kroko-01/saffron-yellow.jpg",
+      "pumpkin-orange": "/images/products/variants/kroko-01/pumpkin-orange.jpg",
+      "flame-red": "/images/products/variants/kroko-01/flame-red.jpg",
+      "sweet-fuchsia": "/images/products/variants/kroko-01/sweet-fuchsia.jpg",
+      "namibian-desert": "/images/products/variants/kroko-01/namibian-desert.jpg",
+      "savannah-land": "/images/products/variants/kroko-01/savannah-land.jpg",
+      "sahara-sand": "/images/products/variants/kroko-01/sahara-sand.jpg"
+    },
+    "big-kroko": {
+      "milky-white": "/images/products/variants/big-kroko/milky-white.jpg",
+      "jet-black": "/images/products/variants/big-kroko/jet-black.jpg",
+      "elephant-grey": "/images/products/variants/big-kroko/elephant-grey.jpg",
+      "chocolate-brown": "/images/products/variants/big-kroko/chocolate-brown.jpg",
+      "argil-grey": "/images/products/variants/big-kroko/argil-grey.jpg",
+      "dove-grey": "/images/products/variants/big-kroko/dove-grey.jpg",
+      "powder-blue": "/images/products/variants/big-kroko/powder-blue.jpg",
+      "malva-green": "/images/products/variants/big-kroko/malva-green.jpg",
+      "lime-green": "/images/products/variants/big-kroko/lime-green.jpg",
+      "saffron-yellow": "/images/products/variants/big-kroko/saffron-yellow.jpg",
+      "pumpkin-orange": "/images/products/variants/big-kroko/pumpkin-orange.jpg",
+      "flame-red": "/images/products/variants/big-kroko/flame-red.jpg",
+      "sweet-fuchsia": "/images/products/variants/big-kroko/sweet-fuchsia.jpg",
+      "namibian-desert": "/images/products/variants/big-kroko/namibian-desert.jpg",
+      "savannah-land": "/images/products/variants/big-kroko/savannah-land.jpg",
+      "sahara-sand": "/images/products/variants/big-kroko/sahara-sand.jpg"
+    },
+    "pot-of-love": {
+      "milky-white": "/images/products/variants/pot-of-love/milky-white.jpg"
+    },
+    "gelee": {
+      "soft-white": "/images/products/variants/gelee/soft-white.jpg",
+      "soft-argil": "/images/products/variants/gelee/soft-argil.jpg",
+      "soft-yellow": "/images/products/variants/gelee/soft-yellow.jpg"
+    },
+    "mirror-of-love": {
+      "milky-white": "/images/products/variants/mirror-of-love/milky-white.jpg",
+      "jet-black": "/images/products/variants/mirror-of-love/jet-black.jpg",
+      "elephant-grey": "/images/products/variants/mirror-of-love/elephant-grey.jpg",
+      "chocolate-brown": "/images/products/variants/mirror-of-love/chocolate-brown.jpg",
+      "argil-grey": "/images/products/variants/mirror-of-love/argil-grey.jpg",
+      "dove-grey": "/images/products/variants/mirror-of-love/dove-grey.jpg",
+      "powder-blue": "/images/products/variants/mirror-of-love/powder-blue.jpg",
+      "malva-green": "/images/products/variants/mirror-of-love/malva-green.jpg",
+      "lime-green": "/images/products/variants/mirror-of-love/lime-green.jpg",
+      "saffron-yellow": "/images/products/variants/mirror-of-love/saffron-yellow.jpg",
+      "pumpkin-orange": "/images/products/variants/mirror-of-love/pumpkin-orange.jpg",
+      "flame-red": "/images/products/variants/mirror-of-love/flame-red.jpg",
+      "sweet-fuchsia": "/images/products/variants/mirror-of-love/sweet-fuchsia.jpg"
+    }
+  },
+  "unknown": {
+    "ambrogio-01": {
+      "coconut-grey": {
+        "name": "Coconut Grey",
+        "hex": null
+      },
+      "grapes-blue": {
+        "name": "Grapes Blue",
+        "hex": null
+      },
+      "light-white": {
+        "name": "Light White",
+        "hex": null
+      },
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      },
+      "gold": {
+        "name": "gold",
+        "hex": null
+      },
+      "silver": {
+        "name": "silver",
+        "hex": null
+      }
+    },
+    "amanda-01": {
+      "coconut-grey": {
+        "name": "Coconut Grey",
+        "hex": null
+      },
+      "grapes-blue": {
+        "name": "Grapes Blue",
+        "hex": null
+      },
+      "light-white": {
+        "name": "Light White",
+        "hex": null
+      },
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      }
+    },
+    "amore": {
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      }
+    },
+    "wow": {
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      }
+    },
+    "threebu": {
+      "namibian-desert": {
+        "name": "Namibian Desert",
+        "hex": null
+      },
+      "savannah-land": {
+        "name": "Savannah Land",
+        "hex": null
+      },
+      "sahara-sand": {
+        "name": "Sahara Sand",
+        "hex": null
+      },
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      },
+      "light-white": {
+        "name": "Light White",
+        "hex": null
+      }
+    },
+    "threebu-pot": {
+      "namibian-desert": {
+        "name": "Namibian Desert",
+        "hex": null
+      },
+      "savannah-land": {
+        "name": "Savannah Land",
+        "hex": null
+      },
+      "sahara-sand": {
+        "name": "Sahara Sand",
+        "hex": null
+      },
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      },
+      "light-white": {
+        "name": "Light White",
+        "hex": null
+      }
+    },
+    "kroko-01": {
+      "namibian-desert": {
+        "name": "Namibian Desert",
+        "hex": null
+      },
+      "savannah-land": {
+        "name": "Savannah Land",
+        "hex": null
+      },
+      "sahara-sand": {
+        "name": "Sahara Sand",
+        "hex": null
+      },
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      }
+    },
+    "big-kroko": {
+      "namibian-desert": {
+        "name": "Namibian Desert",
+        "hex": null
+      },
+      "savannah-land": {
+        "name": "Savannah Land",
+        "hex": null
+      },
+      "sahara-sand": {
+        "name": "Sahara Sand",
+        "hex": null
+      },
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      }
+    },
+    "pot-of-love": {
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      }
+    },
+    "mirror-of-love": {
+      "absolute-white-glossy-finish": {
+        "name": "Absolute White - Glossy Finish",
+        "hex": null
+      },
+      "absolute-white-matt-finish": {
+        "name": "Absolute White - Matt Finish",
+        "hex": null
+      },
+      "glamour-black-glossy-finish": {
+        "name": "Glamour Black - Glossy Finish",
+        "hex": null
+      },
+      "glamour-black-matt-finish": {
+        "name": "Glamour Black - Matt Finish",
+        "hex": null
+      },
+      "vanity-grey-glossy-finish": {
+        "name": "Vanity Grey - Glossy Finish",
+        "hex": null
+      },
+      "vanity-grey-matt-finish": {
+        "name": "Vanity Grey - Matt Finish",
+        "hex": null
+      },
+      "charming-ivory-glossy-finish": {
+        "name": "Charming Ivory - Glossy Finish",
+        "hex": null
+      },
+      "charming-ivory-matt-finish": {
+        "name": "Charming Ivory - Matt Finish",
+        "hex": null
+      },
+      "supreme-red-glossy-finish": {
+        "name": "Supreme Red - Glossy Finish",
+        "hex": null
+      },
+      "supreme-red-matt-finish": {
+        "name": "Supreme Red - Matt Finish",
+        "hex": null
+      },
+      "metallic-gold-glossy-finish": {
+        "name": "Metallic Gold - Glossy Finish",
+        "hex": null
+      },
+      "metallic-gold-matt-finish": {
+        "name": "Metallic Gold - Matt Finish",
+        "hex": null
+      },
+      "metallic-silver-glossy-finish": {
+        "name": "Metallic Silver - Glossy Finish",
+        "hex": null
+      },
+      "metallic-silver-matt-finish": {
+        "name": "Metallic Silver - Matt Finish",
+        "hex": null
+      },
+      "metallic-copper-glossy-finish": {
+        "name": "Metallic Copper - Glossy Finish",
+        "hex": null
+      },
+      "metallic-copper-matt-finish": {
+        "name": "Metallic Copper - Matt Finish",
+        "hex": null
+      }
+    }
+  }
+}

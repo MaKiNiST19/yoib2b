@@ -112,10 +112,11 @@ router.post('/', authenticate, async (req, res) => {
 
     for (const item of items) {
       await sql`
-        INSERT INTO request_items (request_id, product_id, product_name, product_sku, variant_color, variant_size, quantity, unit_price, image_url, notes)
+        INSERT INTO request_items (request_id, product_id, product_name, product_sku, variant_color, variant_size, quantity, unit_price, image_url, notes, dimensions)
         VALUES (${requestId}, ${item.product_id}, ${item.product_name}, ${item.product_sku},
                 ${item.variant_color}, ${item.variant_size || null}, ${item.quantity},
-                ${item.unit_price || null}, ${item.image_url || null}, ${item.notes || null})
+                ${item.unit_price || null}, ${item.image_url || null}, ${item.notes || null},
+                ${item.dimensions ? JSON.stringify(item.dimensions) : null})
       `;
     }
 

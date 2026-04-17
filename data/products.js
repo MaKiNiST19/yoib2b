@@ -1,32 +1,82 @@
+const path = require('path');
+const fs = require('fs');
+
 const CDN = 'https://slide.a8d2.fra.idrivee2-32.com/product/';
 const img = (uuid) => CDN + uuid;
 const local = (id) => `/images/products/${id}.jpg`;
-const variants = (id) => (colorId) => `/images/products/variants/${id}/${colorId}.jpg`;
 
+// ───────────────────────────────────────────────────────
+// COLOR CATALOG — tüm Slide Design renklerinin meta verisi
+// ───────────────────────────────────────────────────────
+const COLOR_CATALOG = {
+  // Standart pastel/canlı palette
+  'milky-white':       { name: 'Milky White',       hex: '#F0EDE4' },
+  'jet-black':         { name: 'Jet Black',         hex: '#1C1C1C' },
+  'elephant-grey':     { name: 'Elephant Grey',     hex: '#6B6B6B' },
+  'chocolate-brown':   { name: 'Chocolate Brown',   hex: '#5C3D2E' },
+  'argil-grey':        { name: 'Argil Grey',        hex: '#9E9689' },
+  'dove-grey':         { name: 'Dove Grey',         hex: '#C4BEB8' },
+  'powder-blue':       { name: 'Powder Blue',       hex: '#A8C5D8' },
+  'malva-green':       { name: 'Malva Green',       hex: '#8B9E7A' },
+  'lime-green':        { name: 'Lime Green',        hex: '#A0C840' },
+  'saffron-yellow':    { name: 'Saffron Yellow',    hex: '#F4C842' },
+  'pumpkin-orange':    { name: 'Pumpkin Orange',    hex: '#E87020' },
+  'flame-red':         { name: 'Flame Red',         hex: '#D4321F' },
+  'sweet-fuchsia':     { name: 'Sweet Fuchsia',     hex: '#E91E8C' },
+
+  // Gelée Soft serisi
+  'soft-white':        { name: 'Soft White',        hex: '#F0EDE6' },
+  'soft-argil':        { name: 'Soft Argil',        hex: '#C8C2B4' },
+  'soft-yellow':       { name: 'Soft Yellow',       hex: '#F5E6A0' },
+
+  // Yeni pastel tonlar
+  'coconut-grey':      { name: 'Coconut Grey',      hex: '#A89F94' },
+  'grapes-blue':       { name: 'Grapes Blue',       hex: '#5A6B8C' },
+  'light-white':       { name: 'Light White',       hex: '#FAFAFA' },
+
+  // Natural / Afrika koleksiyonu
+  'namibian-desert':   { name: 'Namibian Desert',   hex: '#8B6F47' },
+  'savannah-land':     { name: 'Savannah Land',     hex: '#C9A77C' },
+  'sahara-sand':       { name: 'Sahara Sand',       hex: '#E8D5B7' },
+
+  // Glam Glossy Finish
+  'absolute-white-glossy-finish':  { name: 'Absolute White (Glossy)',  hex: '#FFFFFF' },
+  'glamour-black-glossy-finish':   { name: 'Glamour Black (Glossy)',   hex: '#0A0A0A' },
+  'vanity-grey-glossy-finish':     { name: 'Vanity Grey (Glossy)',     hex: '#B8B5B0' },
+  'charming-ivory-glossy-finish':  { name: 'Charming Ivory (Glossy)',  hex: '#F5E6C4' },
+  'supreme-red-glossy-finish':     { name: 'Supreme Red (Glossy)',     hex: '#C13030' },
+  'metallic-gold-glossy-finish':   { name: 'Metallic Gold (Glossy)',   hex: '#D4AF37' },
+  'metallic-silver-glossy-finish': { name: 'Metallic Silver (Glossy)', hex: '#C0C0C0' },
+  'metallic-copper-glossy-finish': { name: 'Metallic Copper (Glossy)', hex: '#B87333' },
+
+  // Glam Matt Finish
+  'absolute-white-matt-finish':    { name: 'Absolute White (Matt)',    hex: '#FAFAFA' },
+  'glamour-black-matt-finish':     { name: 'Glamour Black (Matt)',     hex: '#1A1A1A' },
+  'vanity-grey-matt-finish':       { name: 'Vanity Grey (Matt)',       hex: '#A8A39D' },
+  'charming-ivory-matt-finish':    { name: 'Charming Ivory (Matt)',    hex: '#EBD9B2' },
+  'supreme-red-matt-finish':       { name: 'Supreme Red (Matt)',       hex: '#A82525' },
+  'metallic-gold-matt-finish':     { name: 'Metallic Gold (Matt)',     hex: '#B8962D' },
+  'metallic-silver-matt-finish':   { name: 'Metallic Silver (Matt)',   hex: '#A8A8A8' },
+  'metallic-copper-matt-finish':   { name: 'Metallic Copper (Matt)',   hex: '#9C5F2A' },
+
+  // Sade metallikler
+  'gold':              { name: 'Gold',              hex: '#D4AF37' },
+  'silver':            { name: 'Silver',            hex: '#C0C0C0' },
+};
+
+// Geriye uyumlu eski sabitler (hâlâ başka modüllerce kullanılırsa)
 const STANDARD_COLORS = [
-  { id: 'milky-white',       name: 'Milky White',       hex: '#F0EDE4' },
-  { id: 'jet-black',         name: 'Jet Black',         hex: '#1C1C1C' },
-  { id: 'elephant-grey',     name: 'Elephant Grey',     hex: '#6B6B6B' },
-  { id: 'chocolate-brown',   name: 'Chocolate Brown',   hex: '#5C3D2E' },
-  { id: 'argil-grey',        name: 'Argil Grey',        hex: '#9E9689' },
-  { id: 'dove-grey',         name: 'Dove Grey',         hex: '#C4BEB8' },
-  { id: 'powder-blue',       name: 'Powder Blue',       hex: '#A8C5D8' },
-  { id: 'malva-green',       name: 'Malva Green',       hex: '#8B9E7A' },
-  { id: 'lime-green',        name: 'Lime Green',        hex: '#A0C840' },
-  { id: 'saffron-yellow',    name: 'Saffron Yellow',    hex: '#F4C842' },
-  { id: 'pumpkin-orange',    name: 'Pumpkin Orange',    hex: '#E87020' },
-  { id: 'flame-red',         name: 'Flame Red',         hex: '#D4321F' },
-  { id: 'sweet-fuchsia',     name: 'Sweet Fuchsia',     hex: '#E91E8C' },
-];
+  'milky-white','jet-black','elephant-grey','chocolate-brown','argil-grey',
+  'dove-grey','powder-blue','malva-green','lime-green','saffron-yellow',
+  'pumpkin-orange','flame-red','sweet-fuchsia',
+].map(id => ({ id, ...COLOR_CATALOG[id] }));
 
 const GELEE_COLORS = [
-  { id: 'soft-white',  name: 'Soft White',  hex: '#F0EDE6' },
-  { id: 'soft-argil',  name: 'Soft Argil',  hex: '#C8C2B4' },
-  { id: 'soft-yellow', name: 'Soft Yellow', hex: '#F5E6A0' },
-];
+  'soft-white','soft-argil','soft-yellow',
+].map(id => ({ id, ...COLOR_CATALOG[id] }));
 
 const MIRROR_SIZES = ['S', 'M', 'L', 'XL'];
-const STD_SIZE = ['STD']; // Boyut varyantı olmayan ürünler için standart boyut
+const STD_SIZE = ['STD'];
 
 const CATEGORIES = [
   { id: 'koltuk-sandalye',   name: 'Koltuk & Sandalye' },
@@ -35,7 +85,36 @@ const CATEGORIES = [
   { id: 'dekorasyon',        name: 'Dekorasyon & Aksesuar' },
 ];
 
-const PRODUCTS = [
+// ───────────────────────────────────────────────────────
+// Dış veriler: product-colors.json + product-dimensions.json
+// (scripts/fetch-sub-products.js tarafından üretilir)
+// ───────────────────────────────────────────────────────
+function loadJsonSafe(p) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (_) { return {}; }
+}
+const COLOR_DATA = loadJsonSafe(path.join(__dirname, 'product-colors.json'));
+const DIMS_DATA  = loadJsonSafe(path.join(__dirname, 'product-dimensions.json'));
+
+function colorsForProduct(productId, fallbackIds = []) {
+  const imgs = (COLOR_DATA.images && COLOR_DATA.images[productId]) || {};
+  const ids = Object.keys(imgs).length ? Object.keys(imgs) : fallbackIds;
+  return ids
+    .filter(cid => COLOR_CATALOG[cid])
+    .map(cid => ({ id: cid, ...COLOR_CATALOG[cid] }));
+}
+
+function imagesForProduct(productId) {
+  return (COLOR_DATA.images && COLOR_DATA.images[productId]) || {};
+}
+
+function dimsForProduct(productId) {
+  return DIMS_DATA[productId] || null;
+}
+
+// ───────────────────────────────────────────────────────
+// ÜRÜNLER
+// ───────────────────────────────────────────────────────
+const PRODUCT_DEFS = [
   {
     id: 'ambrogio-01',
     sku: 'SD-AMBROGIO-01',
@@ -43,22 +122,6 @@ const PRODUCTS = [
     category: 'sehpa-masa',
     designer: 'Favaretto & Partners',
     description: 'Komik tasarım estetiğiyle buluşan servis masası. %100 geri dönüştürülmüş Tetra Pak malzemesinden üretilen EcoAllene ile çevre dostu bir seçim.',
-    image: local('ambrogio-01'),
-    colorImages: {
-      'milky-white':     variants('ambrogio-01')('milky-white'),
-      'jet-black':       variants('ambrogio-01')('jet-black'),
-      'elephant-grey':   variants('ambrogio-01')('elephant-grey'),
-      'chocolate-brown': variants('ambrogio-01')('chocolate-brown'),
-      'argil-grey':      variants('ambrogio-01')('argil-grey'),
-      'dove-grey':       variants('ambrogio-01')('dove-grey'),
-      'powder-blue':     variants('ambrogio-01')('powder-blue'),
-      'malva-green':     variants('ambrogio-01')('malva-green'),
-      'lime-green':      variants('ambrogio-01')('lime-green'),
-      'saffron-yellow':  variants('ambrogio-01')('saffron-yellow'),
-      'pumpkin-orange':  variants('ambrogio-01')('pumpkin-orange'),
-      'flame-red':       variants('ambrogio-01')('flame-red'),
-      'sweet-fuchsia':   variants('ambrogio-01')('sweet-fuchsia'),
-    },
     gallery: [
       img('a30a056e-2b75-4628-a157-2b718fa0fe9c'),
       img('55877def-ab0e-4681-9910-f1cab70f2b7c'),
@@ -68,7 +131,6 @@ const PRODUCTS = [
       img('9ef79e75-8a89-4057-b262-c70fe5756358'),
     ],
     productUrl: 'https://www.slidedesign.it/product/ambrogio-01',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -78,17 +140,6 @@ const PRODUCTS = [
     category: 'sehpa-masa',
     designer: 'Favaretto & Partners',
     description: 'Komik formu ve yeşil ruhuyla servis masası. %30 EcoAllene içeren plastikten üretilmiştir.',
-    image: local('amanda-01'),
-    colorImages: {
-      'milky-white':     variants('amanda-01')('milky-white'),
-      'jet-black':       variants('amanda-01')('jet-black'),
-      'elephant-grey':   variants('amanda-01')('elephant-grey'),
-      'argil-grey':      variants('amanda-01')('argil-grey'),
-      'powder-blue':     variants('amanda-01')('powder-blue'),
-      'lime-green':      variants('amanda-01')('lime-green'),
-      'pumpkin-orange':  variants('amanda-01')('pumpkin-orange'),
-      'flame-red':       variants('amanda-01')('flame-red'),
-    },
     gallery: [
       img('79120ce2-ba94-4d79-aa63-d0ab596fc915'),
       img('55877def-ab0e-4681-9910-f1cab70f2b7c'),
@@ -98,7 +149,6 @@ const PRODUCTS = [
       img('ffd46d1b-7ad4-4b63-86dd-24439121bbe4'),
     ],
     productUrl: 'https://www.slidedesign.it/product/amanda-01',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -108,22 +158,6 @@ const PRODUCTS = [
     category: 'bank-oturma',
     designer: 'Giò Colonna Romano',
     description: 'Polietilenden üretilen stilize kaligrafi bank. İç ve dış mekan kullanımına uygundur.',
-    image: local('amore'),
-    colorImages: {
-      'milky-white':     variants('amore')('milky-white'),
-      'jet-black':       variants('amore')('jet-black'),
-      'elephant-grey':   variants('amore')('elephant-grey'),
-      'chocolate-brown': variants('amore')('chocolate-brown'),
-      'argil-grey':      variants('amore')('argil-grey'),
-      'dove-grey':       variants('amore')('dove-grey'),
-      'powder-blue':     variants('amore')('powder-blue'),
-      'malva-green':     variants('amore')('malva-green'),
-      'lime-green':      variants('amore')('lime-green'),
-      'saffron-yellow':  variants('amore')('saffron-yellow'),
-      'pumpkin-orange':  variants('amore')('pumpkin-orange'),
-      'flame-red':       variants('amore')('flame-red'),
-      'sweet-fuchsia':   variants('amore')('sweet-fuchsia'),
-    },
     gallery: [
       img('795c0f25-b2e9-4595-87b6-56bd96591567'),
       img('7c547ae4-6bd8-49f9-bc67-9fbad4edada5'),
@@ -133,7 +167,6 @@ const PRODUCTS = [
       img('9a7d38c6-e0de-42ea-9a0a-f213d2e35bd0'),
     ],
     productUrl: 'https://www.slidedesign.it/product/amore',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -143,22 +176,6 @@ const PRODUCTS = [
     category: 'bank-oturma',
     designer: 'Giò Colonna Romano',
     description: 'Palindromik kaligrafi tasarımlı pop bank. "WOW" harfleri ters çevrilince "MOM" okunur.',
-    image: local('wow'),
-    colorImages: {
-      'milky-white':     variants('wow')('milky-white'),
-      'jet-black':       variants('wow')('jet-black'),
-      'elephant-grey':   variants('wow')('elephant-grey'),
-      'chocolate-brown': variants('wow')('chocolate-brown'),
-      'argil-grey':      variants('wow')('argil-grey'),
-      'dove-grey':       variants('wow')('dove-grey'),
-      'powder-blue':     variants('wow')('powder-blue'),
-      'malva-green':     variants('wow')('malva-green'),
-      'lime-green':      variants('wow')('lime-green'),
-      'saffron-yellow':  variants('wow')('saffron-yellow'),
-      'pumpkin-orange':  variants('wow')('pumpkin-orange'),
-      'flame-red':       variants('wow')('flame-red'),
-      'sweet-fuchsia':   variants('wow')('sweet-fuchsia'),
-    },
     gallery: [
       img('4536fb41-6f92-4080-a19c-e88345b6eb48'),
       img('cecd3477-be3c-4de8-93f3-f3f5063962aa'),
@@ -168,7 +185,6 @@ const PRODUCTS = [
       img('ea5c7f9e-4f02-4e41-9dce-427b44fdf626'),
     ],
     productUrl: 'https://www.slidedesign.it/product/wow',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -178,12 +194,6 @@ const PRODUCTS = [
     category: 'sehpa-masa',
     designer: 'Marcantonio',
     description: 'Afrika sanatından ilham alan çok fonksiyonlu tabure / sehpa. Vazo veya lamba tabanı olarak da kullanılabilir.',
-    image: local('threebu'),
-    colorImages: {
-      'jet-black':      variants('threebu')('jet-black'),
-      'lime-green':     variants('threebu')('lime-green'),
-      'saffron-yellow': variants('threebu')('saffron-yellow'),
-    },
     gallery: [
       img('b39a11e9-5cf4-42b6-8644-25647992ae51'),
       img('d8083d28-d76b-40a6-8c8c-ed4395352985'),
@@ -193,7 +203,6 @@ const PRODUCTS = [
       img('f04a60dc-a851-411e-935a-ccc04cc08be2'),
     ],
     productUrl: 'https://www.slidedesign.it/product/threebu',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -203,11 +212,6 @@ const PRODUCTS = [
     category: 'dekorasyon',
     designer: 'Marcantonio',
     description: 'Afrika sanatından ilham alan dekoratif vazo. Tabure veya sehpa olarak da kullanılabilir.',
-    image: local('threebu-pot'),
-    colorImages: {
-      'milky-white': variants('threebu-pot')('milky-white'),
-      'flame-red':   variants('threebu-pot')('flame-red'),
-    },
     gallery: [
       img('06b3358b-10d2-431d-9ae3-47d599e3750d'),
       img('94d2d989-d624-4fe7-9c05-c449f1895e89'),
@@ -217,7 +221,6 @@ const PRODUCTS = [
       img('bef7a326-bbc7-4afe-b5c0-b30ce6fb6787'),
     ],
     productUrl: 'https://www.slidedesign.it/product/threebu-pot',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -227,21 +230,6 @@ const PRODUCTS = [
     category: 'koltuk-sandalye',
     designer: 'Marcantonio',
     description: 'Şeker kamışından üretilen biyoplastik lounge koltuk. GREEN GOOD DESIGN 2022 ödüllü.',
-    image: local('kroko-01'),
-    colorImages: {
-      'milky-white':     variants('kroko-01')('milky-white'),
-      'jet-black':       variants('kroko-01')('jet-black'),
-      'elephant-grey':   variants('kroko-01')('elephant-grey'),
-      'chocolate-brown': variants('kroko-01')('chocolate-brown'),
-      'argil-grey':      variants('kroko-01')('argil-grey'),
-      'dove-grey':       variants('kroko-01')('dove-grey'),
-      'malva-green':     variants('kroko-01')('malva-green'),
-      'lime-green':      variants('kroko-01')('lime-green'),
-      'saffron-yellow':  variants('kroko-01')('saffron-yellow'),
-      'pumpkin-orange':  variants('kroko-01')('pumpkin-orange'),
-      'flame-red':       variants('kroko-01')('flame-red'),
-      'sweet-fuchsia':   variants('kroko-01')('sweet-fuchsia'),
-    },
     gallery: [
       img('40490ca9-da60-4f81-a197-77a39dc86f0a'),
       img('e28f5cff-13fa-407d-8b2f-d11418db304b'),
@@ -251,7 +239,6 @@ const PRODUCTS = [
       img('dab0e592-d2f7-4af6-a6ec-44dd9352cbb0'),
     ],
     productUrl: 'https://www.slidedesign.it/product/kroko-01',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -261,22 +248,6 @@ const PRODUCTS = [
     category: 'koltuk-sandalye',
     designer: 'Marcantonio',
     description: 'Kroko\'nun iki kişilik versiyonu. Biyoplastik dış mekan kanepe.',
-    image: local('big-kroko'),
-    colorImages: {
-      'milky-white':     variants('big-kroko')('milky-white'),
-      'jet-black':       variants('big-kroko')('jet-black'),
-      'elephant-grey':   variants('big-kroko')('elephant-grey'),
-      'chocolate-brown': variants('big-kroko')('chocolate-brown'),
-      'argil-grey':      variants('big-kroko')('argil-grey'),
-      'dove-grey':       variants('big-kroko')('dove-grey'),
-      'powder-blue':     variants('big-kroko')('powder-blue'),
-      'malva-green':     variants('big-kroko')('malva-green'),
-      'lime-green':      variants('big-kroko')('lime-green'),
-      'saffron-yellow':  variants('big-kroko')('saffron-yellow'),
-      'pumpkin-orange':  variants('big-kroko')('pumpkin-orange'),
-      'flame-red':       variants('big-kroko')('flame-red'),
-      'sweet-fuchsia':   variants('big-kroko')('sweet-fuchsia'),
-    },
     gallery: [
       img('1358778e-9f80-4165-8774-04d74a3e259e'),
       img('e28f5cff-13fa-407d-8b2f-d11418db304b'),
@@ -286,7 +257,6 @@ const PRODUCTS = [
       img('edef970c-02e0-46e9-a894-8fe881d76c33'),
     ],
     productUrl: 'https://www.slidedesign.it/product/big-kroko',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -296,10 +266,6 @@ const PRODUCTS = [
     category: 'dekorasyon',
     designer: 'Moro & Pigatti',
     description: 'Design of Love koleksiyonundan dekoratif saksı. İç ve dış mekan kullanımına uygun polietilen.',
-    image: local('pot-of-love'),
-    colorImages: {
-      'milky-white': variants('pot-of-love')('milky-white'),
-    },
     gallery: [
       img('e3d6fe90-ce7e-4f8a-9c90-5682ca0c30bb'),
       img('b0e18c5c-a3c0-45a2-8e62-314629d53f98'),
@@ -309,7 +275,6 @@ const PRODUCTS = [
       img('dc07d883-c412-4f68-ae41-f83129003574'),
     ],
     productUrl: 'https://www.slidedesign.it/product/pot-of-love',
-    colors: STANDARD_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -319,12 +284,6 @@ const PRODUCTS = [
     category: 'bank-oturma',
     designer: 'Roberto Paoli',
     description: 'Yumuşak poliüretan puf. Şekeri andıran formuyla iç ve dış mekanlarda kullanılabilir.',
-    image: local('gelee'),
-    colorImages: {
-      'soft-white':  variants('gelee')('soft-white'),
-      'soft-argil':  variants('gelee')('soft-argil'),
-      'soft-yellow': variants('gelee')('soft-yellow'),
-    },
     gallery: [
       img('4d273f8a-98f2-46aa-9bf7-4f48b4347ed0'),
       img('d80f83a2-3b0a-4a6a-b2a2-5bb6e9924e53'),
@@ -334,7 +293,6 @@ const PRODUCTS = [
       img('380d7ff6-b42d-41e4-8aa9-000549b0fcec'),
     ],
     productUrl: 'https://www.slidedesign.it/product/gelee',
-    colors: GELEE_COLORS,
     sizes: STD_SIZE,
   },
   {
@@ -344,22 +302,6 @@ const PRODUCTS = [
     category: 'dekorasyon',
     designer: 'Moro & Pigatti',
     description: 'İtalyan barok sanatından ilham alan çerçevesiyle çağdaş ayna. Design of Love koleksiyonu.',
-    image: local('mirror-of-love'),
-    colorImages: {
-      'milky-white':     variants('mirror-of-love')('milky-white'),
-      'jet-black':       variants('mirror-of-love')('jet-black'),
-      'elephant-grey':   variants('mirror-of-love')('elephant-grey'),
-      'chocolate-brown': variants('mirror-of-love')('chocolate-brown'),
-      'argil-grey':      variants('mirror-of-love')('argil-grey'),
-      'dove-grey':       variants('mirror-of-love')('dove-grey'),
-      'powder-blue':     variants('mirror-of-love')('powder-blue'),
-      'malva-green':     variants('mirror-of-love')('malva-green'),
-      'lime-green':      variants('mirror-of-love')('lime-green'),
-      'saffron-yellow':  variants('mirror-of-love')('saffron-yellow'),
-      'pumpkin-orange':  variants('mirror-of-love')('pumpkin-orange'),
-      'flame-red':       variants('mirror-of-love')('flame-red'),
-      'sweet-fuchsia':   variants('mirror-of-love')('sweet-fuchsia'),
-    },
     gallery: [
       img('382d7e5b-ebb9-45e8-91ab-9ed149d004fc'),
       img('f17f9e07-1dff-481a-ad02-8a836aa5399b'),
@@ -369,9 +311,29 @@ const PRODUCTS = [
       img('654aabb2-1443-47c8-9334-2b9c0654593b'),
     ],
     productUrl: 'https://www.slidedesign.it/product/mirror-of-love',
-    colors: STANDARD_COLORS,
     sizes: MIRROR_SIZES,
   },
 ];
 
-module.exports = { PRODUCTS, CATEGORIES, STANDARD_COLORS, GELEE_COLORS, MIRROR_SIZES };
+// Her ürünü colors, colorImages, dimensions ile zenginleştir
+const PRODUCTS = PRODUCT_DEFS.map(p => {
+  const colorImages = imagesForProduct(p.id);
+  const colors = colorsForProduct(p.id);
+  const dimensions = dimsForProduct(p.id);
+  return {
+    ...p,
+    image: local(p.id),
+    colors,
+    colorImages,
+    dimensions,
+  };
+});
+
+module.exports = {
+  PRODUCTS,
+  CATEGORIES,
+  COLOR_CATALOG,
+  STANDARD_COLORS,
+  GELEE_COLORS,
+  MIRROR_SIZES,
+};

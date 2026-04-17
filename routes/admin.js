@@ -33,7 +33,7 @@ router.get('/dealers', requireAdmin, async (req, res) => {
   try {
     const sql = getDb();
     const dealers = await sql`
-      SELECT u.id, u.username, u.company_name, u.email, u.phone, u.city, u.active, u.created_at,
+      SELECT u.id, u.username, u.company_name, u.email, u.phone, u.city, u.discount_percent, u.active, u.created_at,
         (SELECT COUNT(*) FROM requests WHERE dealer_id = u.id) as total_requests,
         (SELECT COUNT(*) FROM requests WHERE dealer_id = u.id AND status = 'pending') as pending_requests
       FROM users u WHERE u.role = 'dealer'
@@ -48,7 +48,7 @@ router.get('/dealers', requireAdmin, async (req, res) => {
 // POST /api/admin/dealers
 router.post('/dealers', requireAdmin, async (req, res) => {
   try {
-    const { username, password, company_name, email, phone, city } = req.body;
+    const { username, password, company_name, email, phone, city, discount_percent } = req.body;
     if (!username || !password || !company_name || !email) {
       return res.status(400).json({ error: 'Kullanıcı adı, şifre, firma adı ve e-posta gerekli' });
     }
@@ -61,9 +61,10 @@ router.post('/dealers', requireAdmin, async (req, res) => {
     if (existing[0]) return res.status(409).json({ error: 'Bu kullanıcı adı zaten kullanılıyor' });
 
     const hash = bcrypt.hashSync(password, 10);
+    const disc = parseFloat(discount_percent) || 0;
     const rows = await sql`
-      INSERT INTO users (username, password_hash, company_name, email, phone, city, role)
-      VALUES (${username}, ${hash}, ${company_name}, ${email}, ${phone || null}, ${city || null}, 'dealer')
+      INSERT INTO users (username, password_hash, company_name, email, phone, city, discount_percent, role)
+      VALUES (${username}, ${hash}, ${company_name}, ${email}, ${phone || null}, ${city || null}, ${disc}, 'dealer')
       RETURNING id
     `;
     res.status(201).json({ id: rows[0].id, message: 'Bayi oluşturuldu' });
@@ -75,7 +76,7 @@ router.post('/dealers', requireAdmin, async (req, res) => {
 // PUT /api/admin/dealers/:id
 router.put('/dealers/:id', requireAdmin, async (req, res) => {
   try {
-    const { company_name, email, phone, city, active, password } = req.body;
+    const { company_name, email, phone, city, active, password, discount_percent } = req.body;
     const sql = getDb();
     const rows = await sql`SELECT * FROM users WHERE id = ${req.params.id} AND role = 'dealer'`;
     const dealer = rows[0];
@@ -87,13 +88,15 @@ router.put('/dealers/:id', requireAdmin, async (req, res) => {
       await sql`UPDATE users SET password_hash = ${hash} WHERE id = ${req.params.id}`;
     }
 
+    const disc = discount_percent !== undefined ? (parseFloat(discount_percent) || 0) : parseFloat(dealer.discount_percent || 0);
     await sql`
       UPDATE users SET
-        company_name = ${company_name || dealer.company_name},
-        email        = ${email || dealer.email},
-        phone        = ${phone !== undefined ? phone : dealer.phone},
-        city         = ${city !== undefined ? city : dealer.city},
-        active       = ${active !== undefined ? (active ? 1 : 0) : dealer.active}
+        company_name     = ${company_name || dealer.company_name},
+        email            = ${email || dealer.email},
+        phone            = ${phone !== undefined ? phone : dealer.phone},
+        city             = ${city !== undefined ? city : dealer.city},
+        discount_percent = ${disc},
+        active           = ${active !== undefined ? (active ? 1 : 0) : dealer.active}
       WHERE id = ${req.params.id}
     `;
     res.json({ message: 'Bayi güncellendi' });

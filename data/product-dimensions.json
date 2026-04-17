@@ -1,0 +1,68 @@
+{
+  "ambrogio-01": {
+    "width": 42.5,
+    "depth": 38.5,
+    "height": 60.5,
+    "weight": 5
+  },
+  "amanda-01": {
+    "width": 36,
+    "depth": 36,
+    "height": 60,
+    "weight": 3.5
+  },
+  "amore": {
+    "width": 145,
+    "depth": 38,
+    "height": 45,
+    "weight": 18
+  },
+  "wow": {
+    "width": 147,
+    "depth": 43,
+    "height": 43,
+    "weight": 20
+  },
+  "threebu": {
+    "width": 45,
+    "depth": 45,
+    "height": 45,
+    "weight": 4
+  },
+  "threebu-pot": {
+    "width": 45,
+    "depth": 45,
+    "height": 45,
+    "weight": 4
+  },
+  "kroko-01": {
+    "width": 110,
+    "depth": 60,
+    "height": 74,
+    "weight": 11
+  },
+  "big-kroko": {
+    "width": 167,
+    "depth": 63,
+    "height": 75,
+    "weight": 22
+  },
+  "pot-of-love": {
+    "width": null,
+    "depth": null,
+    "height": 34,
+    "weight": 2.5
+  },
+  "gelee": {
+    "width": null,
+    "depth": null,
+    "height": 40,
+    "weight": 6
+  },
+  "mirror-of-love": {
+    "width": 99,
+    "depth": 13,
+    "height": 99,
+    "weight": 16
+  }
+}

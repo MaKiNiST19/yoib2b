@@ -245,6 +245,19 @@
           <label>Şehir</label>
           <input type="text" class="form-control" id="d-city">
         </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;">
+            <input type="checkbox" id="d-discount-check" onchange="toggleDiscountField(this)" style="width:16px;height:16px;accent-color:var(--gold);">
+            <span>İndirim tanımla</span>
+          </label>
+          <div id="d-discount-wrap" style="display:none;margin-top:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="number" class="form-control" id="d-discount" min="0" max="100" step="0.5" placeholder="0" style="max-width:120px;">
+              <span style="color:var(--text-muted);font-size:13px;">% indirim uygulanır</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Bayi fiyat listesinde tüm ürünler bu oranda indirimli görünür.</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -450,7 +463,7 @@ async function viewRequest(id) {
       </div>
       ${r.notes ? `<div class="alert alert-info" style="margin-bottom:10px;font-size:12px;"><strong>Bayi Notu:</strong> ${r.notes}</div>` : ''}
       <table class="data-table" style="font-size:12px;margin-bottom:14px;">
-        <thead><tr><th style="width:56px;">Görsel</th><th>Ürün</th><th>Renk</th><th>Boyut</th><th>Adet</th><th>Birim Fiyat</th></tr></thead>
+        <thead><tr><th style="width:56px;">Görsel</th><th>Ürün</th><th>Renk</th><th>Boyut</th><th>Ebat</th><th>Adet</th><th>Birim Fiyat</th></tr></thead>
         <tbody>
           ${r.items.map(i => `
             <tr>
@@ -458,6 +471,7 @@ async function viewRequest(id) {
               <td><strong>${i.product_name}</strong><br><span style="font-family:monospace;color:var(--text-muted);font-size:10px;">${i.product_sku}</span></td>
               <td>${i.variant_color}</td>
               <td>${i.variant_size || '—'}</td>
+              <td style="font-size:11px;color:var(--text-muted);">${formatDims(i.dimensions) || '—'}</td>
               <td style="font-weight:700;">${i.quantity}</td>
               <td>${i.unit_price ? parseFloat(i.unit_price).toFixed(2) + ' TRY' : '—'}</td>
             </tr>
@@ -582,7 +596,10 @@ async function loadDealers() {
     }
     tbody.innerHTML = dealers.map(d => `
       <tr>
-        <td><strong>${d.company_name}</strong></td>
+        <td>
+          <strong>${d.company_name}</strong>
+          ${parseFloat(d.discount_percent||0) > 0 ? `<span class="discount-badge">%${parseFloat(d.discount_percent)} İndirim</span>` : ''}
+        </td>
         <td style="font-family:monospace;color:var(--text-muted);font-size:12px;">${d.username}</td>
         <td style="color:var(--text-muted);font-size:12px;">${d.email}</td>
         <td style="color:var(--text-muted);font-size:12px;">${d.city || '—'}</td>
@@ -609,6 +626,9 @@ function openNewDealer() {
   document.getElementById('d-email').value = '';
   document.getElementById('d-phone').value = '';
   document.getElementById('d-city').value = '';
+  document.getElementById('d-discount-check').checked = false;
+  document.getElementById('d-discount').value = '';
+  document.getElementById('d-discount-wrap').style.display = 'none';
   document.getElementById('d-username').disabled = false;
   document.getElementById('d-password').placeholder = 'En az 6 karakter';
   document.getElementById('dealer-form-error').style.display = 'none';
@@ -626,6 +646,10 @@ function openEditDealer(dealer) {
   document.getElementById('d-email').value = dealer.email;
   document.getElementById('d-phone').value = dealer.phone || '';
   document.getElementById('d-city').value = dealer.city || '';
+  const disc = parseFloat(dealer.discount_percent || 0);
+  document.getElementById('d-discount-check').checked = disc > 0;
+  document.getElementById('d-discount').value = disc > 0 ? disc : '';
+  document.getElementById('d-discount-wrap').style.display = disc > 0 ? '' : 'none';
   document.getElementById('dealer-form-error').style.display = 'none';
   openModal('dealer-modal');
 }
@@ -636,11 +660,14 @@ async function saveDealer() {
   const btn = document.getElementById('dealer-save-btn');
   btn.disabled = true;
 
+  const discCheck = document.getElementById('d-discount-check').checked;
+  const discVal = discCheck ? (parseFloat(document.getElementById('d-discount').value) || 0) : 0;
   const body = {
     company_name: document.getElementById('d-company').value.trim(),
     email: document.getElementById('d-email').value.trim(),
     phone: document.getElementById('d-phone').value.trim(),
     city: document.getElementById('d-city').value.trim(),
+    discount_percent: discVal,
   };
   const password = document.getElementById('d-password').value;
   if (password) body.password = password;
@@ -778,6 +805,17 @@ async function loadLogs() {
   }
 }
 
+// Ebat formatla
+function formatDims(d) {
+  if (!d) return '';
+  if (typeof d === 'string') { try { d = JSON.parse(d); } catch(_) { return ''; } }
+  const parts = [];
+  const dim = [d.width, d.depth, d.height].filter(v => v != null && v !== '');
+  if (dim.length) parts.push(dim.join('×') + ' cm');
+  if (d.weight != null && d.weight !== '') parts.push(d.weight + ' kg');
+  return parts.join(' · ');
+}
+
 // ── Print / PDF ─────────────────────────────────────
 function buildPrintHtml(title, bodyHtml, saveAsPdf = false) {
   return `<!DOCTYPE html><html lang="tr"><head>
@@ -828,6 +866,11 @@ function printLogs() {
   win.document.write(buildPrintHtml('Talep Geçmişi', body, false));
   win.document.close();
   setTimeout(() => { win.focus(); win.print(); }, 400);
+}
+
+function toggleDiscountField(checkbox) {
+  document.getElementById('d-discount-wrap').style.display = checkbox.checked ? '' : 'none';
+  if (!checkbox.checked) document.getElementById('d-discount').value = '';
 }
 
 // ── Init ───────────────────────────────────────────

@@ -35,7 +35,9 @@
       "Bash(node scripts/download-amanda-variants.js)",
       "Bash(node scripts/download-all-variants.js)",
       "Bash(node -r dotenv/config -e \"const { initDb } = require\\('./database'\\); initDb\\(\\).then\\(\\(\\) => { console.log\\('OK'\\); process.exit\\(0\\); }\\).catch\\(e => { console.error\\(e.message\\); process.exit\\(1\\); }\\);\")",
-      "Bash(grep -E \"\\\\.\\(vue|jsx|tsx|html\\)$\")"
+      "Bash(grep -E \"\\\\.\\(vue|jsx|tsx|html\\)$\")",
+      "Bash(node scripts/fetch-sub-products.js)",
+      "Bash(node -e \"const {PRODUCTS} = require\\('./data/products'\\); PRODUCTS.forEach\\(p => console.log\\(p.id, '|', \\(p.colors||[]\\).length, 'renk', '|', JSON.stringify\\(p.dimensions\\)\\)\\);\")"
     ]
   }
 }

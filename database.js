@@ -23,6 +23,7 @@ async function initDb() {
       email     TEXT NOT NULL,
       phone     TEXT,
       city      TEXT,
+      discount_percent NUMERIC DEFAULT 0,
       role      TEXT NOT NULL DEFAULT 'dealer',
       active    INTEGER NOT NULL DEFAULT 1,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -60,6 +61,8 @@ async function initDb() {
 
   // Add image_url column if missing (for existing databases)
   await sql`ALTER TABLE request_items ADD COLUMN IF NOT EXISTS image_url TEXT`.catch(() => {});
+  // Add dimensions column for ebat snapshot
+  await sql`ALTER TABLE request_items ADD COLUMN IF NOT EXISTS dimensions JSONB`.catch(() => {});
 
 
   // product_prices: (product_id, variant_size) composite PK
